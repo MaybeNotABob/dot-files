@@ -1,0 +1,5 @@
+require "user.options"
+require "user.plugins"
+require "user.completion"
+require "user.lsp"
+require "user.treesitter"
