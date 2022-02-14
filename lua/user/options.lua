@@ -23,9 +23,6 @@ vim.opt.pumheight = 10
 -- faster completion (4000ms default)
 vim.opt.updatetime = 300
 
--- show ``` in markdown files
-vim.opt.conceallevel = 0
-
 
 -- ========================================================================= --
 --  File handling
@@ -87,9 +84,6 @@ vim.opt.ignorecase = true
 -- make search incremental
 vim.opt.incsearch = true
 
--- ignore case when searching
-vim.opt.ignorecase = true
-
 -- enable smart case
 vim.opt.smartcase = true
 
@@ -119,10 +113,10 @@ vim.opt.syntax = "on"
 -- disable word wrap
 vim.opt.wrap = false
 
--- insert 2 spaces for a tab
-vim.opt.shiftwidth = 2
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
+-- tab setup
+vim.opt.shiftwidth = 8
+vim.opt.tabstop = 8
+vim.opt.softtabstop = 8
 vim.opt.expandtab = true
 
 -- enable status bar
