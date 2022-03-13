@@ -73,9 +73,8 @@ return packer.startup(function(use)
   -- snippet completion
   use "saadparwaiz1/cmp_luasnip"
 
-  -- snippets
-  use "L3MON4D3/LuaSnip" --snippet engine
---  use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
+  -- snippet engine
+  use "L3MON4D3/LuaSnip"
 
   -- Language Server Protocol [LSP]
   use "neovim/nvim-lspconfig" 
@@ -84,11 +83,28 @@ return packer.startup(function(use)
   -- LSP settings
   use "tamago324/nlsp-settings.nvim" 
 
+  -- telescope fuzzy finder
+  use 'nvim-telescope/telescope.nvim'
+
+  -- file explorer      
+  use {
+        'kyazdani42/nvim-tree.lua',
+        requires = {
+                       -- optional, for file icon
+                        'kyazdani42/nvim-web-devicons', 
+                    },
+        config = function() require'nvim-tree'.setup {} end
+  }
+
+        
   -- Treesitter
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   }
+  use "numToStr/Comment.nvim" 
+  use "JoosepAlviste/nvim-ts-context-commentstring"      
+
 
 -- ========================================================================= --
 -- User plugins end
