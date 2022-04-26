@@ -85,6 +85,8 @@ return packer.startup(function(use)
 
   -- telescope fuzzy finder
   use 'nvim-telescope/telescope.nvim'
+  --use 'BurntSushi/ripgrep'
+  --use 'sharkdp/fd'
 
   -- file explorer      
   use {
