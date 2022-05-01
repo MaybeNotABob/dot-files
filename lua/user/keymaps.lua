@@ -15,6 +15,10 @@ local keymap = vim.api.nvim_set_keymap
 -- no highlight
 keymap("n", "nh", "<cmd>noh<cr>", opts)
 
+-- indent
+keymap("i", "<Tab>", "<C-T>", opts)
+-- de-indent
+keymap("i", "<S-Tab>", "<C-D>", opts)
 
 -- ========================================================================= --
 --  Telescope
@@ -25,7 +29,7 @@ keymap("n", "fb", "<cmd>Telescope buffers<cr>", opts)
 keymap("n", "fh", "<cmd>Telescope help_tags<cr>", opts)
 
 -- ========================================================================= --
--- Comment 
+-- Comment (defaults)
 -- ========================================================================= --
 -- `gcc` - Toggles the current line using linewise comment
 -- `gbc` - Toggles the current line using blockwise comment
@@ -53,5 +57,5 @@ keymap("n", "]d", '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
 -- ========================================================================= --
---  
+   
 -- ========================================================================= --
