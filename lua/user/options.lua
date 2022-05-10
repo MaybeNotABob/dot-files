@@ -115,11 +115,13 @@ vim.opt.wrap = false
 
 -- tab setup
 vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
+vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 vim.opt.autoindent = false
 vim.opt.smartindent = false
+vim.opt.filetype.indent = "off"
+vim.cmd [[ :filetype indent off	]]
 
 -- enable status bar
 vim.opt.laststatus = 2

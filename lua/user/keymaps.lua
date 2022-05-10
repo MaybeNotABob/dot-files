@@ -3,10 +3,11 @@ local keymap = vim.api.nvim_set_keymap
 
 -- n    normal mode
 -- i    insert mode
--- v    visual
+-- v    visual and select
 -- x    visual block
 -- t    term mode
--- c    command mode
+-- c    command-line mode
+-- s    select
 
 -- ========================================================================= --
 -- General 
@@ -16,9 +17,18 @@ local keymap = vim.api.nvim_set_keymap
 keymap("n", "nh", "<cmd>noh<cr>", opts)
 
 -- indent
-keymap("i", "<Tab>", "<C-T>", opts)
+keymap("n", "<Tab>", ">>_", opts)
+keymap("x", "<Tab>", ">gv_", opts)
+keymap("v", "<Tab>", ">gv_", opts)
+-- <Tab> should operate as normal in insert mode.
+-- <C-T> indents when in insert mode.
+
+--
 -- de-indent
 keymap("i", "<S-Tab>", "<C-D>", opts)
+keymap("x", "<S-Tab>", "<gv$", opts)
+keymap("v", "<S-Tab>", "<gv$", opts)
+keymap("n", "<S-Tab>", "<<$", opts)
 
 -- ========================================================================= --
 --  Telescope
@@ -54,7 +64,7 @@ keymap("n", "[d", '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 keymap("n", "gl",'<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 keymap("n", "]d", '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 -- keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+-- vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
 -- ========================================================================= --
    
