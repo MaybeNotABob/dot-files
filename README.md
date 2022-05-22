@@ -9,7 +9,8 @@ Documenting my config progression as I explore the Neo(Vim) world.
 ├── lsp
 │   ├── handlers.lua
 │   ├── init.lua
-│   └── lsp-installer.lua
+│   ├── lsp_installer.lua
+│   └── lsp_signature.lua
 ├── options.lua
 ├── plugins.lua
 ├── swap
