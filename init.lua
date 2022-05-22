@@ -1,4 +1,5 @@
 require "user.plugins"
+require "user.lsp.lsp_signature"
 require "user.options"
 require "user.completion"
 require "user.lsp"

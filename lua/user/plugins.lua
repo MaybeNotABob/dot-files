@@ -83,10 +83,18 @@ return packer.startup(function(use)
   -- LSP settings
   use "tamago324/nlsp-settings.nvim" 
 
+  use "ray-x/lsp_signature.nvim"
+
   -- telescope fuzzy finder
   use 'nvim-telescope/telescope.nvim'
-  --use 'BurntSushi/ripgrep'
-  --use 'sharkdp/fd'
+  -- telescope requires the following tools to be installed for full
+  -- functionality:
+  --  
+  -- BurntSushi/ripgrep
+  -- sharkdp/fd
+
+  -- indentation guide lines
+  use 'lukas-reineke/indent-blankline.nvim'
 
   -- file explorer      
   use {
@@ -104,6 +112,8 @@ return packer.startup(function(use)
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   }
+
+  -- line commenting
   use "numToStr/Comment.nvim" 
   use "JoosepAlviste/nvim-ts-context-commentstring"      
 

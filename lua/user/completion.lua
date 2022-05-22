@@ -62,11 +62,11 @@ cmp.setup {
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
         },
-        ['<CR>'] = cmp.mapping.confirm({ 
-                behavior = cmp.ConfirmBehavior.Insert, select = true 
+        ["<CR>"] = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Insert, select = true
         }),
-        ['<Tab>'] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Insert, select = false 
+        ["<Tab>"] = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Insert, select = false
         }),
 
         -- ["<Tab>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),

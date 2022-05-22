@@ -23,12 +23,13 @@ keymap("v", "<Tab>", ">gv_", opts)
 -- <Tab> should operate as normal in insert mode.
 -- <C-T> indents when in insert mode.
 
---
 -- de-indent
 keymap("i", "<S-Tab>", "<C-D>", opts)
 keymap("x", "<S-Tab>", "<gv$", opts)
 keymap("v", "<S-Tab>", "<gv$", opts)
 keymap("n", "<S-Tab>", "<<$", opts)
+
+
 
 -- ========================================================================= --
 --  Telescope
