@@ -16,6 +16,10 @@ local keymap = vim.api.nvim_set_keymap
 -- no highlight
 keymap("n", "nh", "<cmd>noh<cr>", opts)
 
+-- ========================================================================= --
+--  Indentation
+-- ========================================================================= --
+
 -- indent
 keymap("n", "<Tab>", ">>_", opts)
 keymap("x", "<Tab>", ">gv_", opts)
@@ -29,7 +33,21 @@ keymap("x", "<S-Tab>", "<gv$", opts)
 keymap("v", "<S-Tab>", "<gv$", opts)
 keymap("n", "<S-Tab>", "<<$", opts)
 
+-- ========================================================================= --
+--  Buffers
+-- ========================================================================= --
+keymap("n", "]b", "<cmd>bnext<cr>", opts)
+keymap("n", "[b", "<cmd>bprev<cr>", opts)
+keymap("n", "bb", "<cmd>buffers<cr>", opts)
+keymap("n", "bd", "<cmd>bdelete<cr>", opts)
 
+-- ========================================================================= --
+-- Tabs
+-- ========================================================================= --
+keymap("n", "]t", "<cmd>tabnext<cr>", opts)
+keymap("n", "[t", "<cmd>tabprevious<cr>", opts)
+keymap("n", "td", "<cmd>tabclose<cr>", opts)
+keymap("n", "tt", "<cmd>tabs<cr>", opts)
 
 -- ========================================================================= --
 --  Telescope
