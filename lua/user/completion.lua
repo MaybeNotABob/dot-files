@@ -55,18 +55,15 @@ cmp.setup {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(), 
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-e>"] = cmp.mapping {
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        },
+        ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({
                 behavior = cmp.ConfirmBehavior.Insert, select = true
         }),
         ["<Tab>"] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Insert, select = false
+                behavior = cmp.ConfirmBehavior.Insert, select = true
         }),
 
         -- ["<Tab>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
@@ -75,7 +72,7 @@ cmp.setup {
         -- ["<S-Tab>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
         ["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
 
-  },
+  }),
     formatting = {
         fields = { "kind", "abbr", "menu" },
         format = function(entry, vim_item)
