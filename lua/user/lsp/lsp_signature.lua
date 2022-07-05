@@ -34,13 +34,13 @@ local cfg = {
   floating_window_above_cur_line = true, 
 
   -- adjust float windows x position.
-  floating_window_off_x = 1,
+  floating_window_off_x = -1,
   -- adjust float windows y position.
-  floating_window_off_y = 1, 
+  floating_window_off_y = -1, 
 
   -- set to true, the floating window will not auto-close until finish all parameters
   fix_pos = false,  
-  hint_enable = true,
+  hint_enable = false,
   hint_prefix = "",
   hint_scheme = "String",
 
@@ -56,7 +56,7 @@ local cfg = {
 
   handler_opts = {
     -- double, rounded, single, shadow, none
-    border = "single"    
+    border = "rounded"    
   },
 
   -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
