@@ -47,7 +47,7 @@ return packer.startup(function(use)
   use "wbthomason/packer.nvim"
 
 -- ========================================================================= --
--- User plugins 
+-- ** User plugins **
 -- ========================================================================= --
 
   -- pop-up API for neovim
@@ -59,6 +59,10 @@ return packer.startup(function(use)
   -- colour schemes
   use "NLKNguyen/papercolor-theme"
 --  use "lunarvim/darkplus.nvim"
+
+-- ========================================================================= --
+-- Completion 
+-- ========================================================================= --
 
   -- completion plugins
   use "hrsh7th/nvim-cmp"
@@ -76,6 +80,11 @@ return packer.startup(function(use)
   use "ray-x/cmp-treesitter"
   -- snippet engine
   use "L3MON4D3/LuaSnip"
+
+-- ========================================================================= --
+-- LSP 
+-- ========================================================================= --
+
   -- Language Server Protocol [LSP]
   use "neovim/nvim-lspconfig" 
   -- LSP config and installer
@@ -84,19 +93,31 @@ return packer.startup(function(use)
   use "tamago324/nlsp-settings.nvim" 
   -- function signature help
   use "ray-x/lsp_signature.nvim"
-  -- ripgrep search
-  use "lukas-reineke/cmp-rg"
-  -- telescope fuzzy finder
+ -- Treesitter
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
+  }
+
+-- ========================================================================= --
+-- Telescope 
+-- ========================================================================= --
+  
+  -- fuzzy finder
   use 'nvim-telescope/telescope.nvim'
   -- telescope requires the following tools to be installed for full
   -- functionality:
   --  
-  -- BurntSushi/ripgrep
-  -- sharkdp/fd
+  -- BurntSushi/ripgrep     -- https://github.com/BurntSushi/ripgrep
+  -- sharkdp/fd             -- https://github.com/sharkdp/fd
 
   -- indentation guide lines
   use 'lukas-reineke/indent-blankline.nvim'
 
+-- ========================================================================= --
+-- File management 
+-- ========================================================================= --
+ 
   -- file explorer      
   use {
         'kyazdani42/nvim-tree.lua',
@@ -106,13 +127,10 @@ return packer.startup(function(use)
                     },
         config = function() require'nvim-tree'.setup {} end
   }
-
         
-  -- Treesitter
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
-  }
+-- ========================================================================= --
+-- Editing 
+-- ========================================================================= --
 
   -- line commenting
   use "numToStr/Comment.nvim" 
@@ -120,7 +138,7 @@ return packer.startup(function(use)
 
 
 -- ========================================================================= --
--- User plugins end
+-- **   User plugins END    **
 -- ========================================================================= --
 
 
