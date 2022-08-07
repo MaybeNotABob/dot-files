@@ -72,6 +72,8 @@ return packer.startup(function(use)
   use "hrsh7th/cmp-nvim-lsp"
   -- snippet completion
   use "saadparwaiz1/cmp_luasnip"
+  -- Treesitter completion source
+  use "ray-x/cmp-treesitter"
 
   -- snippet engine
   use "L3MON4D3/LuaSnip"

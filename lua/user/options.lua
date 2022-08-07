@@ -6,7 +6,7 @@
 vim.opt.compatible = false
 
 -- allows neovim to access the system clipboard
-vim.opt.clipboard = "unnamed"
+vim.opt.clipboard = "unnamedplus"
 
 -- disable vim auto formatting clipboard
 --vim.opt.paste = true
@@ -64,10 +64,10 @@ vim.opt.backup = true
 vim.opt.backupdir = backup_dir
 
 -- enable persistent undo
---vim.opt.undofile = true
 if not (path_exists(undo_dir)) then
   vim.loop.fs_mkdir(undo_dir, 493)
 end
+--vim.opt.undofile = true
 vim.opt.undodir = undo_dir
 
 

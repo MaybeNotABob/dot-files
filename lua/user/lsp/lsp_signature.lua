@@ -31,12 +31,12 @@ local cfg = {
   -- try to place the floating above the current line when possible Note:
   -- will set to true when fully tested, set to false will use whichever side has more space
   -- this setting will be helpful if you do not want the PUM and floating win overlap
-  floating_window_above_cur_line = true, 
+  floating_window_above_cur_line = false, 
 
   -- adjust float windows x position.
-  floating_window_off_x = -1,
+  floating_window_off_x = 0,
   -- adjust float windows y position.
-  floating_window_off_y = -1, 
+  floating_window_off_y = 0, 
 
   -- set to true, the floating window will not auto-close until finish all parameters
   fix_pos = false,  
