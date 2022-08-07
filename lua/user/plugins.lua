@@ -136,6 +136,8 @@ return packer.startup(function(use)
   use "numToStr/Comment.nvim" 
   use "JoosepAlviste/nvim-ts-context-commentstring"      
 
+  -- line or block rearrangement
+  use "fedepujol/move.nvim" 
 
 -- ========================================================================= --
 -- **   User plugins END    **

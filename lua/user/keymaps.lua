@@ -92,13 +92,26 @@ keymap("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 keymap("n", "gI", "<cmd>Telescope lsp_document_symbols<CR>", opts)
 
 --keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-keymap("n", "[d", '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-keymap("n", "gl",'<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-keymap("n", "gL",'<cmd>Telescope diagnostics<CR>', opts)
-keymap("n", "]d", '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+keymap("n", "gL", "<cmd>Telescope diagnostics<CR>", opts)
+keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 -- keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 -- vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
 -- ========================================================================= --
-   
+-- Movement
+-- ========================================================================= --
+keymap("n", "<A-j>", ":MoveLine(1)<CR>", opts)
+keymap("n", "<A-k>", ":MoveLine(-1)<CR>", opts)
+keymap("v", "<A-j>", ":MoveBlock(1)<CR>", opts)
+keymap("v", "<A-k>", ":MoveBlock(-1)<CR>", opts)
+keymap("n", "<A-l>", ":MoveHChar(1)<CR>", opts)
+keymap("n", "<A-h>", ":MoveHChar(-1)<CR>", opts)
+keymap("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
+keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
+
+
+-- ========================================================================= --
+-- 
 -- ========================================================================= --
