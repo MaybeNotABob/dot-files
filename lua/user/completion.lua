@@ -88,6 +88,7 @@ cmp.setup {
             -- order of appearance in pop-up menu
             nvim_lsp = "",
             luasnip = "",
+            rg = "",
             treesitter = "",
             buffer = "",
             path = "",
@@ -98,6 +99,7 @@ cmp.setup {
   sources = cmp.config.sources ({
     { name = "nvim_lsp" },
     { name = "luasnip" },
+    { name = "rg" },
     { name = "treesitter"},
     { name = "buffer" },
     { name = "path" },

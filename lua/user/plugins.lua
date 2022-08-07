@@ -74,19 +74,18 @@ return packer.startup(function(use)
   use "saadparwaiz1/cmp_luasnip"
   -- Treesitter completion source
   use "ray-x/cmp-treesitter"
-
   -- snippet engine
   use "L3MON4D3/LuaSnip"
-
   -- Language Server Protocol [LSP]
   use "neovim/nvim-lspconfig" 
   -- LSP config and installer
   use "williamboman/nvim-lsp-installer"
   -- LSP settings
   use "tamago324/nlsp-settings.nvim" 
-
+  -- function signature help
   use "ray-x/lsp_signature.nvim"
-
+  -- ripgrep search
+  use "lukas-reineke/cmp-rg"
   -- telescope fuzzy finder
   use 'nvim-telescope/telescope.nvim'
   -- telescope requires the following tools to be installed for full

@@ -15,6 +15,7 @@ local keymap = vim.api.nvim_set_keymap
 
 -- no highlight
 keymap("n", "nh", "<cmd>noh<cr>", opts)
+keymap("n", "<C-e>", "<cmd>NvimTreeToggle<cr>", opts)
 
 -- ========================================================================= --
 --  Indentation
