@@ -1,5 +1,15 @@
 local M = {}
 
+M.capabilities = vim.lsp.protocol.make_client_capabilities()
+
+local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if not status_ok then
+  return
+end
+
+M.capabilities.textDocument.completion.completionItem.snippetSupport = true
+M.capabilities = cmp_nvim_lsp.update_capabilities(M.capabilities)
+
 M.setup = function()
   local signs = {
     { name = "DiagnosticSignError", text = "" },
@@ -24,9 +34,9 @@ M.setup = function()
     severity_sort = true,
     float = {
       focusable = false,
-    --  style = "minimal",
+      style = "minimal",
       border = "rounded",
-      source = "always",
+      source = "if_many",
       --header = "",
       --prefix = "",
     },
@@ -35,15 +45,5 @@ M.setup = function()
   vim.diagnostic.config(config)
 
 end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not status_ok then
-  return
-end
-
-M.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 return M

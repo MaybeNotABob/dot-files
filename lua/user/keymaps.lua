@@ -41,6 +41,7 @@ keymap("n", "]b", "<cmd>bnext<cr>", opts)
 keymap("n", "[b", "<cmd>bprev<cr>", opts)
 keymap("n", "bb", "<cmd>Telescope buffers<cr>", opts)
 keymap("n", "bd", "<cmd>bdelete<cr>", opts)
+keymap("n", "bn", "<cmd>enew<cr>", opts)
 
 -- ========================================================================= --
 -- Tabs
@@ -49,6 +50,7 @@ keymap("n", "]t", "<cmd>tabnext<cr>", opts)
 keymap("n", "[t", "<cmd>tabprevious<cr>", opts)
 keymap("n", "td", "<cmd>tabclose<cr>", opts)
 keymap("n", "tt", "<cmd>tabs<cr>", opts)
+keymap("n", "tn", "<cmd>tabnew<cr>", opts)
 
 -- ========================================================================= --
 --  Telescope
