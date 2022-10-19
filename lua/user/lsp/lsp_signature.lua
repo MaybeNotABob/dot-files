@@ -23,29 +23,7 @@ local cfg = {
   -- This setting only take effect in insert mode, it does not affect signature help in normal
   -- mode, 10 by defaulti
   -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
-  doc_lines = 10, 
-
-  -- show hint in a floating window, set to false for virtual text only mode
-  floating_window = true, 
-
-  -- try to place the floating above the current line when possible Note:
-  -- will set to true when fully tested, set to false will use whichever side has more space
-  -- this setting will be helpful if you do not want the PUM and floating win overlap
-  floating_window_above_cur_line = false, 
-
-  -- adjust float windows x position.
-  floating_window_off_x = 0,
-  -- adjust float windows y position.
-  floating_window_off_y = 0, 
-
-  -- set to true, the floating window will not auto-close until finish all parameters
-  fix_pos = false,  
-  hint_enable = false,
-  hint_prefix = "",
-  hint_scheme = "String",
-
-  -- how your parameter will be highlight
-  hi_parameter = "LspSignatureActiveParameter", 
+  doc_lines = 0, 
 
   -- max height of signature floating_window, if content is more than max_height, you can scroll down
   -- to view the hiding contents
@@ -53,6 +31,31 @@ local cfg = {
 
   -- max_width of signature floating_window, line will be wrapped if exceed max_width
   max_width = 80, 
+
+  -- show hint in a floating window, set to false for virtual text only mode
+  floating_window = true, 
+
+  -- try to place the floating above the current line when possible Note:
+  -- will set to true when fully tested, set to false will use whichever side has more space
+  -- this setting will be helpful if you do not want the PUM and floating win overlap
+  floating_window_above_cur_line = true, 
+
+  -- adjust float windows x position.
+  floating_window_off_x = 1,
+  -- adjust float windows y position.
+  floating_window_off_y = 0, 
+
+  close_timeout = 2000,
+  -- set to true, the floating window will not auto-close until finish all parameters
+ 
+  fix_pos = false,  
+  hint_enable = false,
+  hint_prefix = "",
+  hint_scheme = "String",
+  use_lspaga = false,
+  -- how your parameter will be highlight
+  hi_parameter = "LspSignatureActiveParameter", 
+
 
   handler_opts = {
     -- double, rounded, single, shadow, none
@@ -87,7 +90,13 @@ local cfg = {
   timer_interval = 200,  
    
   -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
-  toggle_key = nil 
+  toggle_key = nil, 
+
+  -- cycle to next signature, e.g. '<M-n>' function overloading
+  select_signature_key = nil,
+
+  -- imap, use nvim_set_current_win to move cursor between current win and floating
+  move_cursor_key = nil,
 }
 
 -- recommended: -- no need to specify bufnr if you don't use toggle_key
