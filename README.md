@@ -1,8 +1,10 @@
 # dot-files  
+
 Documenting my config progression as I explore the Neo(Vim) world.
 
 ```
 ├── backup
+├── blank_lines.lua
 ├── comment.lua
 ├── completion.lua
 ├── keymaps.lua
@@ -17,10 +19,10 @@ Documenting my config progression as I explore the Neo(Vim) world.
 ├── telescope.lua
 ├── treesitter.lua
 └── undo
-
 ```
 
-### Acknowledgements ###
+### Acknowledgements
+
 __ChrisAtMachine / C@M__  
 Massive thank you for the instructional videos (NeoVim setup with Lua).  
 Go checkout his YouTube: https://www.youtube.com/watch?v=ctH-a-1eUME&list=PLhoH5vyxr6Qq41NFL4GvhFp-WLd5xzIzZ

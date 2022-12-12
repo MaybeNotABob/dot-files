@@ -59,7 +59,7 @@ local cfg = {
 
   handler_opts = {
     -- double, rounded, single, shadow, none
-    border = "rounded"    
+    border = "none"    
   },
 
   -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
