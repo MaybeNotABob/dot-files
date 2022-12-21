@@ -11,11 +11,13 @@ M.capabilities.textDocument.completion.completionItem.snippetSupport = true
 M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
 
 M.setup = function()
+  local icons = require "user.user_icons"
+
   local signs = {
-    { name = "DiagnosticSignError", text = "" },
-    { name = "DiagnosticSignWarn", text = "" },
-    { name = "DiagnosticSignHint", text = "" },
-    { name = "DiagnosticSignInfo", text = "" },
+    { name = "DiagnosticSignError", text = icons.diagnostics.Error },
+    { name = "DiagnosticSignWarn",  text = icons.diagnostics.Warning },
+    { name = "DiagnosticSignHint",  text = icons.diagnostics.Hint },
+    { name = "DiagnosticSignInfo",  text = icons.diagnostics.Information },
   }
 
   for _, sign in ipairs(signs) do
@@ -36,13 +38,25 @@ M.setup = function()
       focusable = false,
       style = "minimal",
       border = "rounded",
-      source = "if_many",
+      source = "if_many", -- Or "alwats"
       --header = "",
       --prefix = "",
     },
   }
 
   vim.diagnostic.config(config)
+
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = "rounded",
+    -- width = 60,
+    -- height = 30,
+  })
+
+  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = "rounded",
+    -- width = 60,
+    -- height = 30,
+  })
 
 end
 

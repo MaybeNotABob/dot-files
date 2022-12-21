@@ -51,24 +51,38 @@ function path_exists(file_path)
      	return true
     end
 end
- 
-if not (path_exists(swap_dir)) then
-  vim.loop.fs_mkdir(swap_dir, 493)
-end
-vim.opt.directory = swap_dir
 
-if not (path_exists(backup_dir)) then
-  vim.loop.fs_mkdir(backup_dir, 493)
+-- enable swap files
+vim.opt.swapfile = true
+
+if (vim.opt.swapfile == true) then
+  if not (path_exists(swap_dir)) then
+    vim.loop.fs_mkdir(swap_dir, 493)
+  end
+  vim.opt.directory = swap_dir
 end
+
+
+-- enable backup file
 vim.opt.backup = true
-vim.opt.backupdir = backup_dir
+
+if (vim.opt.backup == true) then
+  if not (path_exists(backup_dir)) then
+    vim.loop.fs_mkdir(backup_dir, 493)
+  end
+  vim.opt.backupdir = backup_dir
+end
+
 
 -- enable persistent undo
-if not (path_exists(undo_dir)) then
-  vim.loop.fs_mkdir(undo_dir, 493)
+vim.opt.undofile = false
+
+if (vim.opt.undofile == true) then
+  if not (path_exists(undo_dir)) then
+    vim.loop.fs_mkdir(undo_dir, 493)
+  end
+  vim.opt.undodir = undo_dir
 end
---vim.opt.undofile = true
-vim.opt.undodir = undo_dir
 
 
 -- ========================================================================= --
@@ -86,6 +100,7 @@ vim.opt.incsearch = true
 
 -- enable smart case
 vim.opt.smartcase = true
+
 
 -- ========================================================================= --
 --  Interface

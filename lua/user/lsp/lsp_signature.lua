@@ -3,6 +3,8 @@ if not status_ok then
   return
 end
 
+local icons = require "user.user_icons"
+
 local cfg = {
 
   -- set to true to enable debug logging
@@ -50,7 +52,7 @@ local cfg = {
  
   fix_pos = false,  
   hint_enable = false,
-  hint_prefix = "",
+  hint_prefix = icons.diagnostics.Hint,
   hint_scheme = "String",
   use_lspaga = false,
   -- how your parameter will be highlight
