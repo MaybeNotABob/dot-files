@@ -47,10 +47,11 @@ cmp.setup {
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Insert, select = true
+                  behavior = cmp.ConfirmBehavior.Replace, select = false
+              --  behavior = cmp.ConfirmBehavior.Insert, select = false
         }),
         ["<Tab>"] = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Insert, select = true
+                behavior = cmp.ConfirmBehavior.Replace, select = false
         }),
 
         -- ["<Tab>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),

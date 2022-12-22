@@ -75,7 +75,7 @@ end
 
 
 -- enable persistent undo
-vim.opt.undofile = true
+vim.opt.undofile = false
 vim.opt.undodir = undo_dir
 
 if (vim.opt.undofile == true) then
