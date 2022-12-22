@@ -54,34 +54,34 @@ end
 
 -- enable swap files
 vim.opt.swapfile = true
+vim.opt.directory = swap_dir
 
 if (vim.opt.swapfile == true) then
   if not (path_exists(swap_dir)) then
     vim.loop.fs_mkdir(swap_dir, 493)
   end
-  vim.opt.directory = swap_dir
 end
 
 
 -- enable backup file
 vim.opt.backup = true
+vim.opt.backupdir = backup_dir
 
 if (vim.opt.backup == true) then
   if not (path_exists(backup_dir)) then
     vim.loop.fs_mkdir(backup_dir, 493)
   end
-  vim.opt.backupdir = backup_dir
 end
 
 
 -- enable persistent undo
-vim.opt.undofile = false
+vim.opt.undofile = true
+vim.opt.undodir = undo_dir
 
 if (vim.opt.undofile == true) then
   if not (path_exists(undo_dir)) then
     vim.loop.fs_mkdir(undo_dir, 493)
   end
-  vim.opt.undodir = undo_dir
 end
 
 
@@ -105,6 +105,9 @@ vim.opt.smartcase = true
 -- ========================================================================= --
 --  Interface
 -- ========================================================================= --
+
+-- completion menu 
+vim.opt.completeopt = { "menuone", "noselect" }
 
 -- panel splitting
 vim.opt.splitbelow = true
