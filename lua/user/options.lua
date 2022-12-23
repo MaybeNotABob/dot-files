@@ -136,9 +136,9 @@ vim.opt.syntax = "on"
 vim.opt.wrap = false
 
 -- tab setup
-vim.opt.shiftwidth = 2
+vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
-vim.opt.softtabstop = 2
+vim.opt.softtabstop = 4
 vim.opt.cindent = false
 vim.opt.expandtab = true
 vim.opt.autoindent = false
@@ -152,7 +152,7 @@ vim.opt.laststatus = 2
 -- set color scheme
 vim.cmd [[
 try
-  colorscheme PaperColor
+  colorscheme kanagawa 
 catch /^Vim\%((\a\+)\)\=:E185/
   colorscheme default
   set background=dark

@@ -57,8 +57,9 @@ return packer.startup(function(use)
   use "nvim-lua/plenary.nvim" 
   
   -- colour schemes
-  use "NLKNguyen/papercolor-theme"
---  use "lunarvim/darkplus.nvim"
+-- use "NLKNguyen/papercolor-theme"
+-- use "lunarvim/darkplus.nvim"
+  use "rebelot/kanagawa.nvim"
 
 -- ========================================================================= --
 -- Completion 
