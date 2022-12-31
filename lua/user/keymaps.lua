@@ -12,10 +12,12 @@ local keymap = vim.api.nvim_set_keymap
 -- ========================================================================= --
 -- General 
 -- ========================================================================= --
+-- default leader key "\"
+vim.g.mapleader = " "
 
 -- no highlight
 keymap("n", "nh", "<cmd>noh<cr>", opts)
-keymap("n", "<C-f>", "<cmd>NvimTreeToggle<cr>", opts)
+keymap("n", "<leader>f", "<cmd>NvimTreeToggle<cr>", opts)
 
 -- ========================================================================= --
 --  Indentation
