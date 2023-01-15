@@ -59,8 +59,11 @@ keymap("n", "tn", "<cmd>tabnew<cr>", opts)
 -- ========================================================================= --
 keymap("n", "ff", "<cmd>Telescope find_files<cr>", opts)
 keymap("n", "fg", "<cmd>Telescope live_grep<cr>", opts)
+keymap("n", "fb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", opts)
 keymap("n", "fh", "<cmd>Telescope help_tags<cr>", opts)
 keymap("n", "fr", "<cmd>Telescope registers<cr>", opts)
+keymap("n", "<leader>m", "<cmd>Telescope man_pages<cr>", opts)
+
 
 -- ========================================================================= --
 -- Comment (defaults)
@@ -82,22 +85,25 @@ keymap("n", "fr", "<cmd>Telescope registers<cr>", opts)
 keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 
 --keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-keymap("n", "gd", "<cmd>Telescope lsp_definitions<cr>", opts)
+keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+
+keymap("n", "gT", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
 -- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-keymap("n", "gr", "<cmd>Telescope lsp_references<cr>", opts)
+keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
 
 -- keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-keymap("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
+keymap("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 
 -- keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 keymap("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 
 keymap("n", "gI", "<cmd>Telescope lsp_document_symbols<CR>", opts)
 
---keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+--keymap("n", "gL", "<cmd>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
 keymap("n", "gL", "<cmd>Telescope diagnostics<CR>", opts)
 keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 -- keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
