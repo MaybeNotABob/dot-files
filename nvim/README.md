@@ -3,22 +3,26 @@
 Documenting my config progression as I explore the Neo(Vim) world.
 
 ```
-├── backup
-├── blank_lines.lua
-├── comment.lua
-├── completion.lua
-├── keymaps.lua
-├── lsp
-│   ├── handlers.lua
-│   ├── init.lua
-│   ├── lsp_installer.lua
-│   └── lsp_signature.lua
-├── options.lua
-├── plugins.lua
-├── swap
-├── telescope.lua
-├── treesitter.lua
-└── undo
+├── lua/
+│   └── user/
+│       ├── backup/
+│       ├── undo/
+│       ├── swap/
+│       ├── lsp/
+│       │   ├── handlers.lua
+│       │   ├── init.lua
+│       │   ├── lsp_installer.lua
+│       │   └── lsp_signature.lua
+│       ├── options.lua
+│       ├── plugins.lua
+│       ├── blank_lines.lua
+│       ├── comment.lua
+│       ├── completion.lua
+│       ├── keymaps.lua
+│       ├── telescope.lua
+│       ├── treesitter.lua
+│       └── user_icons.lua
+
 ```
 
 ### Acknowledgements
