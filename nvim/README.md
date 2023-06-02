@@ -1,6 +1,12 @@
-# dot-files  
+# Neovim dot-files  
 
 Documenting my config progression as I explore the Neo(Vim) world.
+
+## Screenshot of curent theme/config: <br>
+<br>
+  <img src="https://github.com/MaybeNotABob/nordtheme/blob/ca1787b07aa3a8e0f13e7226b1f54bf81d57ce0f/nord-dark.png">
+
+## File Structure
 
 ```
 ├── lua/
@@ -25,7 +31,7 @@ Documenting my config progression as I explore the Neo(Vim) world.
 
 ```
 
-### Acknowledgements
+## Acknowledgements
 
 __ChrisAtMachine / C@M__  
 Massive thank you for the instructional videos (NeoVim setup with Lua).  
