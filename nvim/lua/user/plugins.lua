@@ -54,11 +54,13 @@ return packer.startup(function(use)
   use "nvim-lua/popup.nvim"
 
   -- useful functions used by many plugins 
-  use "nvim-lua/plenary.nvim" 
-  
+  use "nvim-lua/plenary.nvim"
+
+
   -- colour schemes
   -- use "rebelot/kanagawa.nvim"
   use "MaybeNotABob/nordtheme"
+
 -- ========================================================================= --
 -- Completion 
 -- ========================================================================= --
@@ -66,12 +68,12 @@ return packer.startup(function(use)
   -- completion plugins
   use "hrsh7th/nvim-cmp"
   -- buffer completion
-  use "hrsh7th/cmp-buffer" 
+  use "hrsh7th/cmp-buffer"
   -- path completion
-  use "hrsh7th/cmp-path" 
+  use "hrsh7th/cmp-path"
   -- command line completion
   use "hrsh7th/cmp-cmdline"
-  -- 
+
   use "hrsh7th/cmp-nvim-lsp"
   -- snippet completion
   use "saadparwaiz1/cmp_luasnip"
@@ -85,11 +87,15 @@ return packer.startup(function(use)
 -- ========================================================================= --
 
   -- Language Server Protocol [LSP]
-  use "neovim/nvim-lspconfig" 
-  -- LSP config and installer
-  use "williamboman/nvim-lsp-installer"
+
+  -- Mason plugin manager
+  use {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        "neovim/nvim-lspconfig"
+  }
   -- LSP settings
-  use "tamago324/nlsp-settings.nvim" 
+  use "tamago324/nlsp-settings.nvim"
   -- function signature help
   use "ray-x/lsp_signature.nvim"
  -- Treesitter
@@ -101,7 +107,7 @@ return packer.startup(function(use)
 -- ========================================================================= --
 -- Telescope 
 -- ========================================================================= --
-  
+
   -- fuzzy finder
   use 'nvim-telescope/telescope.nvim'
   -- telescope requires the following tools to be installed for full
@@ -116,27 +122,27 @@ return packer.startup(function(use)
 -- ========================================================================= --
 -- File management 
 -- ========================================================================= --
- 
+
   -- file explorer      
   use {
         'kyazdani42/nvim-tree.lua',
         requires = {
                        -- optional, for file icon
-                        'kyazdani42/nvim-web-devicons', 
+                        'kyazdani42/nvim-web-devicons',
                     },
         config = function() require'nvim-tree'.setup {} end
   }
-        
+
 -- ========================================================================= --
 -- Editing 
 -- ========================================================================= --
 
   -- line commenting
-  use "numToStr/Comment.nvim" 
-  use "JoosepAlviste/nvim-ts-context-commentstring"      
+  use "numToStr/Comment.nvim"
+  use "JoosepAlviste/nvim-ts-context-commentstring"
 
   -- line or block rearrangement
-  use "fedepujol/move.nvim" 
+  use "fedepujol/move.nvim"
 
 -- ========================================================================= --
 -- **   User plugins END    **
