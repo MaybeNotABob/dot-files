@@ -12,10 +12,10 @@ vim.opt.clipboard = "unnamedplus"
 --vim.opt.paste = true
 
 -- so that `` is visible in markdown files
-vim.opt.conceallevel = 0                   
+vim.opt.conceallevel = 0
 
 -- allow the mouse to be used in neovim
-vim.opt.mouse = "a"                           
+vim.opt.mouse = "a"
 
 -- pop up menu height
 vim.opt.pumheight = 10
@@ -47,7 +47,7 @@ function path_exists(file_path)
    local result = os.rename(file_path, file_path)
     if (nil == result) then
     	return false
-    else 
+    else
      	return true
     end
 end
