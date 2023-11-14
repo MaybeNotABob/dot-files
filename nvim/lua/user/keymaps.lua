@@ -79,34 +79,65 @@ keymap("n", "<leader>m", "<cmd>Telescope man_pages<cr>", opts)
 -- LSP
 -- ========================================================================= --
 
--- Telescope lsp_declarations throws an error
--- command not found, therefore, falling back vim version.
+--
+-- LSP DECLARATIONS
+--
 --keymap("n", "gD", "<cmd>Telescope lsp_declarations<cr>", opts)
-keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+--keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+keymap("n", "gD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>", opts)
 
+--
+--
+--
 --keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+keymap("n", "gd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opts)
+--keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+--keymap("n", "gd", "<cmd>lua require('telescope.builtin').lsp_definitions<CR>", opts)
+--keymap("n", "gd", "<cmd>lua require('telescope.builtin').lsp_definitions({jump_type='never'})<CR>", opts)
 
-keymap("n", "gT", "<cmd>Telescope lsp_type_definitions<CR>", opts)
+--
+-- TYPE DEFINITIONS
+--
+--keymap("n", "gT", "<cmd>Telescope lsp_type_definitions<CR>", opts)
+keymap("n", "gT", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
 
+--
+-- REFERENCES
+--
 -- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+-- keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+keymap("n", "gr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", opts)
 
+--
+-- SIGNATURE
+--
 -- keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 keymap("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 
+--
+-- IMPLEMENTION
+--
 -- keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 keymap("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 
+--
+-- SYMBOLS
+--
 keymap("n", "gI", "<cmd>Telescope lsp_document_symbols<CR>", opts)
-
 keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+
+--
+-- DIAGNOSTICS
+--
 keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
---keymap("n", "gL", "<cmd>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
+-- keymap("n", "gL", "<cmd>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
 keymap("n", "gL", "<cmd>Telescope diagnostics<CR>", opts)
 keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 -- keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+
+--
+-- FORMATTING
 -- vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
 -- ========================================================================= --

@@ -89,6 +89,14 @@ telescope.setup {
     diagnostics = {
         theme = "dropdown",
     },
+--    lsp_definitions = {
+--        theme = "dropdown",
+--       jump_type = "never",
+--    },
+--    lsp_declarations = {
+--        theme = "dropdown",
+--       jump_type = "never",
+--    },
   },
 }
 

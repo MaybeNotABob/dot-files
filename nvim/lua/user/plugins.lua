@@ -56,7 +56,6 @@ return packer.startup(function(use)
   -- useful functions used by many plugins 
   use "nvim-lua/plenary.nvim"
 
-
   -- colour schemes
   -- use "rebelot/kanagawa.nvim"
   use "MaybeNotABob/nordtheme"
@@ -67,18 +66,23 @@ return packer.startup(function(use)
 
   -- completion plugins
   use "hrsh7th/nvim-cmp"
+
   -- buffer completion
   use "hrsh7th/cmp-buffer"
+
   -- path completion
   use "hrsh7th/cmp-path"
+
   -- command line completion
   use "hrsh7th/cmp-cmdline"
-
   use "hrsh7th/cmp-nvim-lsp"
+
   -- snippet completion
   use "saadparwaiz1/cmp_luasnip"
+
   -- Treesitter completion source
   use "ray-x/cmp-treesitter"
+
   -- snippet engine
   use "L3MON4D3/LuaSnip"
 
@@ -96,13 +100,18 @@ return packer.startup(function(use)
   }
   -- LSP settings
   use "tamago324/nlsp-settings.nvim"
+
   -- function signature help
   use "ray-x/lsp_signature.nvim"
+
  -- Treesitter
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   }
+
+ -- preview peek
+ use "rmagatti/goto-preview"
 
 -- ========================================================================= --
 -- Telescope 
@@ -143,6 +152,9 @@ return packer.startup(function(use)
 
   -- line or block rearrangement
   use "fedepujol/move.nvim"
+
+  -- navigation
+  use "christoomey/vim-tmux-navigator"
 
 -- ========================================================================= --
 -- **   User plugins END    **
