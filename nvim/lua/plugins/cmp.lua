@@ -85,14 +85,16 @@ function M.config()
 
 
     formatting = {
-      -- fields = { "kind", "abbr", "menu" },
+      --  fields = { "kind", "abbr", "menu" },
 
-      -- mimic VSCode popup menu
+      --  mimic VSCode popup menu
       fields = { "kind", "abbr" },
       format = function(entry, vim_item)
-        -- icons loaded here
+
+        --  icons loaded here
         vim_item.kind = icons.kind[vim_item.kind]
-        -- order of appearance in pop-up menu
+
+        --  order of appearance in pop-up menu
         vim_item.menu = ({
           nvim_lsp = "",
           treesitter = "",
@@ -100,10 +102,25 @@ function M.config()
           path = "",
         })[entry.source.name]
 
-        -- add treesitter icon lookup
+        --  add treesitter icon lookup
         if entry.source.name == "treesitter" then
           vim_item.kind = icons.kind.Treesitter
         end
+
+        --  trim the completion text to max of 
+        --  50 chars
+        --
+        --  Yuki Uthman
+        --  youtube.com/watch?v=uDPZ2yJS6os
+
+        function trim(text)
+          local max_len = 50
+          if text and text:len() > max_len then
+            text = text:sub(1, max_len) .. " ..."
+          end
+          return text
+        end
+        vim_item.abbr = trim(vim_item.abbr)
 
         return vim_item
       end,
