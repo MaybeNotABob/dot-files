@@ -9,25 +9,30 @@ Documenting my config progression as I explore the Neo(Vim) world.
 ## File Structure
 
 ```
-├── lua/
-│   └── user/
-│       ├── backup/
-│       ├── undo/
-│       ├── swap/
-│       ├── lsp/
-│       │   ├── handlers.lua
-│       │   ├── init.lua
-│       │   ├── lsp_installer.lua
-│       │   └── lsp_signature.lua
-│       ├── options.lua
-│       ├── plugins.lua
-│       ├── blank_lines.lua
-│       ├── comment.lua
-│       ├── completion.lua
-│       ├── keymaps.lua
-│       ├── telescope.lua
-│       ├── treesitter.lua
-│       └── user_icons.lua
+├── init.lua
+├── lazy-lock.json
+├── lazyvim.json
+├── lua
+│   ├── config
+│   │   ├── icons.lua
+│   │   ├── keymaps.lua
+│   │   ├── lazy.lua
+│   │   └── options.lua
+│   ├── plugins
+│   │   ├── cmp.lua
+│   │   ├── colorscheme.lua
+│   │   ├── comment.lua
+│   │   ├── goto-preview.lua
+│   │   ├── indent_blankline.lua
+│   │   ├── lspconfig.lua
+│   │   ├── lsp_signature.lua
+│   │   ├── mason.lua
+│   │   ├── telescope.lua
+│   │   └── treesitter.lua
+│   └── user
+│       ├── backup
+│       └── swap
+
 
 ```
 
@@ -40,4 +45,5 @@ Go checkout his YouTube: https://www.youtube.com/watch?v=ctH-a-1eUME&list=PLhoH5
 __NordTheme__  
 https://github.com/nordtheme/vim
 
-
+__Yuki Uthman__
+youtube.com/watch?v=uDPZ2yJS6os
