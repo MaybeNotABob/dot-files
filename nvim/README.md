@@ -36,6 +36,12 @@ Documenting my config progression as I explore the Neo(Vim) world.
 
 ```
 
+## Change log
+
+-
+- [20-DEC-2023]:  Moved to Lazy plugin manager from packer
+
+
 ## Acknowledgements
 
 __ChrisAtMachine / C@M__  
@@ -45,5 +51,5 @@ Go checkout his YouTube: https://www.youtube.com/watch?v=ctH-a-1eUME&list=PLhoH5
 __NordTheme__  
 https://github.com/nordtheme/vim
 
-__Yuki Uthman__
+__Yuki Uthman__  
 youtube.com/watch?v=uDPZ2yJS6os
