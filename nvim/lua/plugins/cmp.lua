@@ -26,12 +26,13 @@ local M = {
       "ray-x/cmp-treesitter",
       event = "InsertEnter",
     },
+    { 
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      event = "InsertEnter",
+    },
   },
 }
 
-function M.on_attach()
-
-end
 
 function M.config()
   local cmp = require "cmp"
@@ -131,6 +132,7 @@ function M.config()
       { name = "treesitter" },
       { name = "buffer" },
       { name = "path" },
+      { name = 'nvim_lsp_signature_help' },
     },
 
     confirm_opts = {

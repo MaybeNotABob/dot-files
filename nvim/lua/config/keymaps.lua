@@ -16,7 +16,7 @@ local keymap = vim.keymap.set
 vim.g.mapleader = " "
 
 -- no highlight
-keymap("n", "nh", "<cmd>noh<cr>", opts)
+keymap("n", "nh", "<CMD>noh<CR>", opts)
 
 
 -- ========================================================================= --
@@ -39,30 +39,30 @@ keymap("n", "<S-Tab>", "<<$", opts)
 -- ========================================================================= --
 --  Buffers
 -- ========================================================================= --
-keymap("n", "]b", "<cmd>bnext<cr>", opts)
-keymap("n", "[b", "<cmd>bprev<cr>", opts)
-keymap("n", "bb", "<cmd>Telescope buffers<cr>", opts)
-keymap("n", "bd", "<cmd>bdelete<cr>", opts)
-keymap("n", "bn", "<cmd>enew<cr>", opts)
+keymap("n", "]b", "<CMD>bnext<CR>", opts)
+keymap("n", "[b", "<CMD>bprev<CR>", opts)
+keymap("n", "bb", "<CMD>Telescope buffers<CR>", opts)
+keymap("n", "bd", "<CMD>bdelete<CR>", opts)
+keymap("n", "bn", "<CMD>enew<CR>", opts)
 
 -- ========================================================================= --
 -- Tabs
 -- ========================================================================= --
-keymap("n", "]t", "<cmd>tabnext<cr>", opts)
-keymap("n", "[t", "<cmd>tabprevious<cr>", opts)
-keymap("n", "td", "<cmd>tabclose<cr>", opts)
-keymap("n", "tt", "<cmd>tabs<cr>", opts)
-keymap("n", "tn", "<cmd>tabnew<cr>", opts)
+keymap("n", "]t", "<CMD>tabnext<CR>", opts)
+keymap("n", "[t", "<CMD>tabprevious<CR>", opts)
+keymap("n", "td", "<CMD>tabclose<CR>", opts)
+keymap("n", "tt", "<CMD>tabs<CR>", opts)
+keymap("n", "tn", "<CMD>tabnew<CR>", opts)
 
 -- ========================================================================= --
 --  Telescope
 -- ========================================================================= --
-keymap("n", "ff", "<cmd>Telescope find_files<cr>", opts)
-keymap("n", "fg", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "fb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", opts)
-keymap("n", "fh", "<cmd>Telescope help_tags<cr>", opts)
-keymap("n", "fr", "<cmd>Telescope registers<cr>", opts)
-keymap("n", "<leader>m", "<cmd>Telescope man_pages<cr>", opts)
+keymap("n", "ff", "<CMD>Telescope find_files<CR>", opts)
+keymap("n", "fg", "<CMD>Telescope live_grep<CR>", opts)
+keymap("n", "fb", "<CMD>Telescope current_buffer_fuzzy_find<CR>", opts)
+keymap("n", "fh", "<CMD>Telescope help_tags<CR>", opts)
+keymap("n", "fr", "<CMD>Telescope registers<CR>", opts)
+keymap("n", "<leader>m", "<CMD>Telescope man_pages<CR>", opts)
 
 
 -- ========================================================================= --
@@ -82,63 +82,98 @@ keymap("n", "<leader>m", "<cmd>Telescope man_pages<cr>", opts)
 --
 -- LSP DECLARATIONS
 --
---keymap("n", "gD", "<cmd>Telescope lsp_declarations<cr>", opts)
---keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-keymap("n", "gD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>", opts)
+--keymap("n", "gD", "<CMD>Telescope lsp_declarations<CR>", opts)
+--keymap("n", "gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
+keymap("n", "gD", "<CMD>lua require('goto-preview').goto_preview_declaration()<CR>", opts)
 
 --
+-- LSP DEFINITIONS
 --
---
---keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-keymap("n", "gd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opts)
---keymap("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
---keymap("n", "gd", "<cmd>lua require('telescope.builtin').lsp_definitions<CR>", opts)
---keymap("n", "gd", "<cmd>lua require('telescope.builtin').lsp_definitions({jump_type='never'})<CR>", opts)
+--keymap("n", "gd", "<CMD>lua vim.lsp.buf.definition()<CR>", opts)
+keymap("n", "gd", "<CMD>lua require('goto-preview').goto_preview_definition()<CR>", opts)
+--keymap("n", "gd", "<CMD>Telescope lsp_definitions<CR>", opts)
+--keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions<CR>", opts)
+--keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions({jump_type='never'})<CR>", opts)
+
+--  quick peek, one line popup of definition
+keymap("n", "<leader>d", 
+ function ()
+  function preview_location_callback(_, result)
+    if result == nil or vim.tbl_isempty(result) then
+      return nil
+    end
+    vim.lsp.util.preview_location(result[1])
+  end
+
+    local params = vim.lsp.util.make_position_params()
+    return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
+end,
+  opts
+)
+ 
 
 --
 -- TYPE DEFINITIONS
 --
---keymap("n", "gT", "<cmd>Telescope lsp_type_definitions<CR>", opts)
-keymap("n", "gT", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
+--keymap("n", "gT", "<CMD>Telescope lsp_type_definitions<CR>", opts)
+keymap("n", "gT", "<CMD>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
 
 --
 -- REFERENCES
 --
--- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
--- keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-keymap("n", "gr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", opts)
+-- keymap("n", "gr", "<CMD>lua vim.lsp.buf.references()<CR>", opts)
+-- keymap("n", "gr", "<CMD>Telescope lsp_references<CR>", opts)
+keymap("n", "gr", "<CMD>lua require('goto-preview').goto_preview_references()<CR>", opts)
 
 --
 -- SIGNATURE
 --
--- keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-keymap("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+-- keymap("n", "<C-k>", "<CMD>lua vim.lsp.buf.signature_help()<CR>", opts)
+keymap("n", "gs", "<CMD>lua vim.lsp.buf.signature_help()<CR>", opts)
 
 --
 -- IMPLEMENTION
 --
--- keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-keymap("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
+-- keymap("n", "gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", opts)
+keymap("n", "gi", "<CMD>Telescope lsp_implementations<CR>", opts)
 
 --
 -- SYMBOLS
 --
-keymap("n", "gI", "<cmd>Telescope lsp_document_symbols<CR>", opts)
-keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+keymap("n", "gI", "<CMD>Telescope lsp_document_symbols<CR>", opts)
+keymap("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>", opts)
 
 --
 -- DIAGNOSTICS
 --
-keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
--- keymap("n", "gL", "<cmd>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
-keymap("n", "gL", "<cmd>Telescope diagnostics<CR>", opts)
-keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
--- keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+keymap("n", "[d", "<CMD>lua vim.diagnostic.goto_prev()<CR>", opts)
+keymap("n", "gl", "<CMD>lua vim.diagnostic.open_float()<CR>", opts)
+-- keymap("n", "gL", "<CMD>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
+keymap("n", "gL", "<CMD>Telescope diagnostics<CR>", opts)
+keymap("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>", opts)
+-- keymap("n", "<leader>q", "<CMD>lua vim.diagnostic.setloclist()<CR>", opts)
 
 --
 -- FORMATTING
--- vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+--
+
+-- https://vi.stackexchange.com/a/41430
+--function FormatFunction()
+--  vim.lsp.buf.format({
+--    async = true,
+--    range = {
+--      ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+--      ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+--    }
+--  })
+--end
+
+
+--keymap("x", "gF", "<Esc><cmd>lua FormatFunction()<CR>", opts)
+--keymap("v", "gF", "<Esc><cmd>lua FormatFunction()<CR>", opts)
+
+--keymap("v", "gF", "<ESC><CMD>lua vim.lsp.buf.range_formatting()<CR>", opts)
+
 
 -- ========================================================================= --
 -- Movement
@@ -157,8 +192,8 @@ keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 --  nvim-tree
 -- ========================================================================= --
 
---keymap("n", "<leader>f", "<cmd>NvimTreeToggle<cr>", opts)
---keymap("n", "<leader>f", "<cmd>NvimTreeOpenOrFocus<cr>", opts)
+--keymap("n", "<leader>f", "<CMD>NvimTreeToggle<CR>", opts)
+--keymap("n", "<leader>f", "<CMD>NvimTreeOpenOrFocus<CR>", opts)
 
 
 keymap("n", "<leader>f", 
@@ -180,7 +215,7 @@ keymap("n", "<leader>f",
 	      nvimTree.tree.focus()
       end
     end,
-  { noremap = true, silent = true, nowait = true }
+  opts
 )
  
 

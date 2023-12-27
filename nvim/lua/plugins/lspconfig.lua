@@ -4,7 +4,6 @@ local M = {
   dependencies = {
     { 
       "hrsh7th/cmp-nvim-lsp",
-     -- "folke/neodev.nvim",
     },
   },
 }
@@ -30,10 +29,6 @@ function M.capabilities()
   return abilities
 end
 
-
-function M.on_attach (client, bufnr)
-	-- set extra keymaps or options here
-end
 
 function M.config()
   local lspconfig = require "lspconfig"
