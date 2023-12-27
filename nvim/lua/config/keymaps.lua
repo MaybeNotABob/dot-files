@@ -1,4 +1,4 @@
-local opts = { noremap = true, silent = true }
+local opts = { noremap = true, silent = true, nowait = true }
 local keymap = vim.keymap.set
 
 -- n    normal mode
@@ -160,6 +160,9 @@ keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 --keymap("n", "<leader>f", "<cmd>NvimTreeToggle<cr>", opts)
 --keymap("n", "<leader>f", "<cmd>NvimTreeOpenOrFocus<cr>", opts)
 
+
+keymap("n", "<leader>f", 
+  function ()
 --
 --  if nvim-tree is closed, open and focus it
 --
@@ -168,9 +171,6 @@ keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 --  if nvim-tree is open, but another buffer is focused,
 --  focus nvim-tree
 --
-
-keymap("n", "<leader>f", 
-  function ()
     local nvimTree = require("nvim-tree.api")
     local currentBuf = vim.api.nvim_get_current_buf()
     local currentBufFt = vim.api.nvim_get_option_value("filetype", { buf = currentBuf })
