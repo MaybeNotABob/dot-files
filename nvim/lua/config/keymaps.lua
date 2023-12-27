@@ -1,5 +1,5 @@
 local opts = { noremap = true, silent = true }
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
 -- n    normal mode
 -- i    insert mode
@@ -17,7 +17,7 @@ vim.g.mapleader = " "
 
 -- no highlight
 keymap("n", "nh", "<cmd>noh<cr>", opts)
-keymap("n", "<leader>f", "<cmd>NvimTreeToggle<cr>", opts)
+
 
 -- ========================================================================= --
 --  Indentation
@@ -152,6 +152,38 @@ keymap("n", "<A-h>", ":MoveHChar(-1)<CR>", opts)
 keymap("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
 keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 
+
+-- ========================================================================= --
+--  nvim-tree
+-- ========================================================================= --
+
+--keymap("n", "<leader>f", "<cmd>NvimTreeToggle<cr>", opts)
+--keymap("n", "<leader>f", "<cmd>NvimTreeOpenOrFocus<cr>", opts)
+
+--
+--  if nvim-tree is closed, open and focus it
+--
+--  if nvim-tree is opened and focused, close it
+--
+--  if nvim-tree is open, but another buffer is focused,
+--  focus nvim-tree
+--
+
+keymap("n", "<leader>f", 
+  function ()
+    local nvimTree = require("nvim-tree.api")
+    local currentBuf = vim.api.nvim_get_current_buf()
+    local currentBufFt = vim.api.nvim_get_option_value("filetype", { buf = currentBuf })
+     if currentBufFt == "NvimTree" then
+	      nvimTree.tree.toggle()
+      else
+        nvimTree.tree.open()
+	      nvimTree.tree.focus()
+      end
+    end,
+  { noremap = true, silent = true, nowait = true }
+)
+ 
 
 -- ========================================================================= --
 -- 
