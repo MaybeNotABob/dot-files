@@ -177,7 +177,6 @@ keymap("n", "<leader>f",
      if currentBufFt == "NvimTree" then
 	      nvimTree.tree.toggle()
       else
-        nvimTree.tree.open()
 	      nvimTree.tree.focus()
       end
     end,
