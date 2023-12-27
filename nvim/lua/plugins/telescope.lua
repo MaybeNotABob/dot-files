@@ -1,3 +1,10 @@
+  -- telescope requires the following tools to be installed for full
+  -- functionality:
+  --  
+  -- BurntSushi/ripgrep     -- https://github.com/BurntSushi/ripgrep
+  -- sharkdp/fd             -- https://github.com/sharkdp/fd
+
+
 local M = {
   "nvim-telescope/telescope.nvim",
   dependencies = {

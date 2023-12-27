@@ -107,7 +107,7 @@ vim.opt.smartcase = true
 -- ========================================================================= --
 
 -- completion menu 
-vim.opt.completeopt = { "menuone", "noselect" }
+vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
 
 -- panel splitting
 vim.opt.splitbelow = true
@@ -135,6 +135,9 @@ vim.opt.syntax = "on"
 -- disable word wrap
 vim.opt.wrap = false
 
+-- scroll passed the bottom of the buffer
+vim.scrolloff = 10
+
 -- tab setup
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
@@ -149,13 +152,4 @@ vim.cmd [[ :filetype indent off	]]
 -- enable status bar
 vim.opt.laststatus = 2
 
--- set color scheme
--- colorscheme kanagawa
-vim.cmd [[
-try 
-  colorscheme nord
-catch /^Vim\%((\a\+)\)\=:E185/
-  colorscheme default
-  set background=dark
-endtry
-]]
+
