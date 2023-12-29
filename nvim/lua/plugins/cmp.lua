@@ -38,14 +38,6 @@ function M.config()
   local cmp = require "cmp"
   local icons = require("config.icons")
   cmp.setup ({
---    snippet = {
---      expand = function(args)
---        luasnip.lsp_expand(args.body) 
---      end,
---    },
---    completion = {
---      completeopt = "menu,menuone,preview,noselect",
---    },
 
      -- gray
     vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg='NONE', strikethrough=true, fg='#808080' }),
@@ -129,7 +121,7 @@ function M.config()
 
     sources = {
       { name = "nvim_lsp" },
-      { name = "treesitter" },
+      { name = "treesitter", keyword_length = 3 },
       { name = "buffer" },
       { name = "path" },
       { name = 'nvim_lsp_signature_help' },
@@ -171,8 +163,7 @@ function M.config()
     },
   })
 
-
-
 end
+
 
 return M

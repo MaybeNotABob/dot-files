@@ -75,6 +75,7 @@ keymap("n", "<leader>m", "<CMD>Telescope man_pages<CR>", opts)
 -- `gc[count]{motion}` - (Op-pending) Toggles the region using linewise comment
 -- `gb[count]{motion}` - (Op-pending) Toggles the region using blockwise comment
 
+
 -- ========================================================================= --
 -- LSP
 -- ========================================================================= --
@@ -192,10 +193,6 @@ keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 --  nvim-tree
 -- ========================================================================= --
 
---keymap("n", "<leader>f", "<CMD>NvimTreeToggle<CR>", opts)
---keymap("n", "<leader>f", "<CMD>NvimTreeOpenOrFocus<CR>", opts)
-
-
 keymap("n", "<leader>f", 
   function ()
 --
@@ -217,7 +214,55 @@ keymap("n", "<leader>f",
     end,
   opts
 )
+
  
+-- ========================================================================= --
+--  trouble.nvim
+-- ========================================================================= --
+
+keymap("n", "<leader>xx",
+    function() 
+      require("trouble").toggle() 
+    end,
+  opts
+)
+
+keymap("n", "<leader>xw",
+    function() 
+      require("trouble").toggle("workspace_diagnostics") 
+    end,
+  opts
+)
+
+keymap("n", "<leader>xd",
+    function() 
+      require("trouble").toggle("document_diagnostics") 
+    end,
+  opts
+)
+
+keymap("n", "<leader>xq",
+    function() 
+      require("trouble").toggle("quickfix") 
+    end,
+  opts
+)
+
+
+keymap("n", "<leader>xl",
+    function() 
+      require("trouble").toggle("loclist") 
+    end,
+  opts
+)
+
+keymap("n", "<leader>gr",
+    function() 
+      require("trouble").toggle("lsp_references") 
+    end,
+  opts
+)
+
 
 -- ========================================================================= --
 -- 

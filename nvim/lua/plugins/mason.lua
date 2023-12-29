@@ -12,6 +12,7 @@ local M = {
   },
 }
 
+
 function M.config()
   require("mason").setup({
     ui = {
@@ -39,7 +40,6 @@ function M.config()
 
 
 end
-
 
 
 return M

@@ -13,6 +13,7 @@ local M = {
   event = { "BufReadPost", "BufNewFile" },
 }
 
+
 function M.config ()
 
   local status_ok, telescope = pcall(require, "telescope")
@@ -128,5 +129,6 @@ function M.config ()
 }
 
 end
+
 
 return M

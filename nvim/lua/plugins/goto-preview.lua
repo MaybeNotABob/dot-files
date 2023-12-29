@@ -3,6 +3,7 @@ local M = {
   event = { "BufReadPre", "BufNewFile" },
 }
 
+
 function M.config ()
 
   local status_ok, goto_preview = pcall(require, "goto-preview")
@@ -31,6 +32,7 @@ function M.config ()
     preview_window_title = { enable = true, position = "left" }, -- Whether to set the preview window title as the filename
   }
 end
+
 
 return M
 
