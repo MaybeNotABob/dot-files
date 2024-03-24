@@ -1,6 +1,6 @@
 local M = {
   "rmagatti/goto-preview",
-  event = { "BufReadPre", "BufNewFile" },
+  event = { "InsertEnter","BufReadPre", "BufNewFile" },
 }
 
 

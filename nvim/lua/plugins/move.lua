@@ -1,11 +1,26 @@
 local M = {
   "fedepujol/move.nvim",
-  event = { "BufReadPre", "BufNewFile" },
+  event = { "InsertEnter","BufReadPre", "BufNewFile" },
 }
   
 
 function M.config()
--- No setup to be called
+require('move').setup({
+	line = {
+		enable = true, -- Enables line movement
+		indent = true  -- Toggles indentation
+	},
+	block = {
+		enable = true, -- Enables block movement
+		indent = true  -- Toggles indentation
+	},
+	word = {
+		enable = true, -- Enables word movement
+	},
+	char = {
+		enable = false -- Enables char movement
+	}
+})
 end
 
 

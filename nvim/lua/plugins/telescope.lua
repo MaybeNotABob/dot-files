@@ -10,7 +10,7 @@ local M = {
   dependencies = {
     "nvim-lua/plenary.nvim"
   },
-  event = { "BufReadPost", "BufNewFile" },
+  event = { "InsertEnter","BufReadPre", "BufNewFile" },
 }
 
 
