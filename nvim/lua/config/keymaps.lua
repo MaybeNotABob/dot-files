@@ -169,6 +169,7 @@ keymap("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>", opts)
 --  })
 --end
 
+keymap("n", "gq", vim.lsp.buf.format, opts)
 
 --keymap("x", "gF", "<Esc><cmd>lua FormatFunction()<CR>", opts)
 --keymap("v", "gF", "<Esc><cmd>lua FormatFunction()<CR>", opts)

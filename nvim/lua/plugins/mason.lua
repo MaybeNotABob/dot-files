@@ -24,6 +24,11 @@ function M.config()
     },
     ensure_installed = {
       -- servers to install e.g. "pyright", "clangd"
+      "clangd",         --  C/C++
+      "clang-format",   --  C/C++
+      "black",          --  Python
+      "pyright",        --  Python
+
     },
   })
 
