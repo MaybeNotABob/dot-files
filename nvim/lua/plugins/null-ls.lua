@@ -16,8 +16,8 @@ function M.config()
     debug = false,
     sources = {
         formatting.clang_format.with {
-            extra_args = {
-               "--style=google"
+            args = {
+               '--style={BasedOnStyle: google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true}'
             }
         },
         formatting.black.with{
