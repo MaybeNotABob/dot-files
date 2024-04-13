@@ -27,6 +27,7 @@ Documenting my config progression as I explore the Neo(Vim) world.
 │   │   ├── lspconfig.lua
 │   │   ├── lsp_signature.lua
 │   │   ├── mason.lua
+|   |   ├── null-ls.lua
 │   │   ├── telescope.lua
 │   │   └── treesitter.lua
 │   └── user
@@ -38,8 +39,8 @@ Documenting my config progression as I explore the Neo(Vim) world.
 
 ## Change log
 
--
-- [20-DEC-2023]:  Moved to Lazy plugin manager from packer
+- [13-APR-2024]:  Added None-ls (wraps null-ls) for formattng.
+- [20-DEC-2023]:  Moved to Lazy plugin manager from packer.
 
 
 ## Acknowledgements
