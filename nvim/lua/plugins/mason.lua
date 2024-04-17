@@ -10,10 +10,12 @@ local M = {
   cmd = { 
     "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" 
   },
+
 }
 
 
 function M.config()
+
   require("mason").setup({
     ui = {
       icons = {
@@ -22,25 +24,20 @@ function M.config()
         package_uninstalled = '✗',
       },
     },
-    ensure_installed = {
-      -- servers to install e.g. "pyright", "clangd"
-      "clangd",         --  C/C++
-      "clang-format",   --  C/C++
-      "black",          --  Python
-      "pyright",        --  Python
-
-    },
   })
 
+  require('mason-lspconfig').setup({
+      -- list of servers for mason to install
+      ensure_installed = {
+      "clangd",         --  C/C++
+      "pyright",        --  Python
+    }
+  })  
+
   require("mason-lspconfig").setup_handlers({
-
-    function (server_name)
-        require("lspconfig")[server_name].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-    end
-
+      function (server_name)
+          require("lspconfig")[server_name].setup({})
+      end,
   })
 
 

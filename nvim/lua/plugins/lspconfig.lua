@@ -8,31 +8,10 @@ local M = {
   },
 }
 
-
-function M.capabilities()
-
-  local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-  if status_ok then
-    return cmp_nvim_lsp.default_capabilities()
-  end
-
-  local abilities = vim.lsp.protocol.make_client_capabilities()
-  abilities.textDocument.completion.completionItem.snippetSupport = true
-  abilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-      "documentation",
-      "detail",
-      "additionalTextEdits",
-    },
-  }
-
-  return abilities
-end
-
-
 function M.config()
   local lspconfig = require "lspconfig"
   local icons = require "config.icons"
+
 
   local default_diagnostic_config = {
     signs = {
@@ -63,7 +42,8 @@ function M.config()
   for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}) do
     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
   end
-  
+
+
 end
 
 
