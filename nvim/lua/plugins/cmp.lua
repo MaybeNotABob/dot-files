@@ -30,13 +30,29 @@ local M = {
       "hrsh7th/cmp-nvim-lsp-signature-help",
       event = "InsertEnter",
     },
+
+    {
+      "saadparwaiz1/cmp_luasnip",
+      event = "InsertEnter",
+    },
+    {
+      "L3MON4D3/LuaSnip",
+      event = "InsertEnter",
+      dependencies = {
+        "rafamadriz/friendly-snippets",
+      },
+    },
+
   },
 }
 
 
 function M.config()
-  local cmp = require "cmp"
+  local cmp = require("cmp")
   local icons = require("config.icons")
+  local luasnip = require("luasnip")
+
+
   cmp.setup ({
 
      -- gray
@@ -55,6 +71,15 @@ function M.config()
     vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg='NONE', fg='#D4D4D4' }),
     vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link='CmpItemKindKeyword' }),
     vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link='CmpItemKindKeyword' }),
+
+
+    require("luasnip/loaders/from_vscode").lazy_load(),
+    snippet = {
+      expand = function(args)
+        luasnip.lsp_expand(args.body) -- For `luasnip` users.
+      end,
+    },
+
 
     mapping = cmp.mapping.preset.insert {
       ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
@@ -90,6 +115,8 @@ function M.config()
         --  order of appearance in pop-up menu
         vim_item.menu = ({
           nvim_lsp = "",
+          nvim_lua = "",
+          luasnip = "",
           treesitter = "",
           buffer = "",
           path = "",
@@ -121,6 +148,8 @@ function M.config()
 
     sources = {
       { name = "nvim_lsp" },
+      { name = "nvim_lua"},
+      { name = "luasnip"}, 
       { name = "treesitter", keyword_length = 3 },
       { name = "buffer" },
       { name = "path" },

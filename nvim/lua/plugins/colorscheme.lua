@@ -1,6 +1,6 @@
 local M = {
   -- colorscheme repo
-	"MaybeNotABob/nordtheme",
+  "folke/tokyonight.nvim",
   lazy = false,
   priority = 1000,
 }
@@ -8,7 +8,8 @@ local M = {
 
 function M.config ()
   -- load the colorscheme here
-  vim.cmd([[colorscheme nord]])
+  vim.cmd.colorscheme "tokyonight-night"
+
 end
 
 
