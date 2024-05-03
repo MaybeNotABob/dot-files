@@ -27,15 +27,15 @@ function M.config()
     sources = {
         formatting.stylua,
         formatting.clang_format.with {
-            args = {
+            extra_args = {
               '--style={BasedOnStyle: google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true}'
             }
         },
         formatting.black.with{
-          extra_args = {
-            "--line-length=120",
-            "--skip-string-normalization"
-          },
+            extra_args = {
+              "--line-length=120",
+              "--skip-string-normalization"
+            },
         },
     },
   }
