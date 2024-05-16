@@ -36,29 +36,23 @@ function M.config()
     }
   })
 
+  for _, server in ipairs(mason_lspconfig.get_installed_servers()) do
 
-  for _, server in pairs(mason_lspconfig.get_installed_servers()) do
-    require("lspconfig")[server].setup ({
-          on_attach = function(client, bufnr)
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-              --  turn off formatting as this will be carried out by
-              --  null-ls
+      --  turn off formatting as this will be carried out by
+      --  null-ls
+      local on_attach = function(client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+      end
 
-              local client_filetypes = client.config.filetypes or {}
-              for _, filetype in ipairs(client_filetypes) do
+      capabilities.offsetEncoding = { "utf-16" }
 
-                client.server_capabilities.documentFormattingProvider = false
-                client.server_capabilities.documentRangeFormattingProvider = false
+      require("lspconfig")[server].setup({
+          capabilities = capabilities,
+      })
 
-              end
-
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities.offsetEncoding = { "utf-16" }
-            require("lspconfig").setup({ capabilities = capabilities })
-
-          end,
-
-    })
   end
 
 
