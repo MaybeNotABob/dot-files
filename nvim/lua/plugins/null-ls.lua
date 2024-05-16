@@ -19,7 +19,7 @@ function M.config()
     --  force utf-8
     --  https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428
     on_init = function(new_client, _)
-    new_client.offset_encoding = "utf-8"
+    new_client.offset_encoding = "utf-16"
     end,
     --  ***** workaround *****
 
