@@ -32,7 +32,7 @@ vim.opt.updatetime = 300
 vim.opt.filetype = "on"
 
 -- the encoding written to a file
-vim.opt.fileencoding = "utf-16"
+vim.opt.fileencoding = "utf-8"
 
 -- keep all vim files together for easy housekeeping
 local swap_dir = vim.fn.stdpath "config" .. "/lua/user/swap/"
