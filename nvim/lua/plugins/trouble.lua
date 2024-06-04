@@ -4,11 +4,17 @@ local M = {
   dependencies = { 
     "nvim-tree/nvim-web-devicons" 
   },
+  cmd = {
+    "Trouble",
+  },
 }
 
 
 function M.config()
--- No setup to be called
+  local trouble = require("trouble").setup({
+    focus = true,
+    auto_close = true
+  })
 end
 
 

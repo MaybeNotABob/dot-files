@@ -8,7 +8,7 @@ local M = {
 
     plugin_indent_blankline.setup {
       scope = { 
-        enabled = false
+        enabled = true
       }
     }
 

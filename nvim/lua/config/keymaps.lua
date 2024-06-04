@@ -17,7 +17,8 @@ vim.g.mapleader = " "
 
 -- no highlight
 keymap("n", "nh", "<CMD>noh<CR>", opts)
-
+-- unmap command history
+keymap("n", "q:", "<nop>", opts)
 
 -- ========================================================================= --
 --  Indentation
@@ -97,7 +98,7 @@ keymap("n", "gd", "<CMD>lua require('goto-preview').goto_preview_definition()<CR
 --keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions({jump_type='never'})<CR>", opts)
 
 --  quick peek, one line popup of definition
-keymap("n", "<leader>d", 
+keymap("n", "<leader>d",
  function ()
   function preview_location_callback(_, result)
     if result == nil or vim.tbl_isempty(result) then
@@ -125,6 +126,13 @@ keymap("n", "gT", "<CMD>lua require('goto-preview').goto_preview_type_definition
 -- keymap("n", "gr", "<CMD>lua vim.lsp.buf.references()<CR>", opts)
 -- keymap("n", "gr", "<CMD>Telescope lsp_references<CR>", opts)
 keymap("n", "gr", "<CMD>lua require('goto-preview').goto_preview_references()<CR>", opts)
+keymap('i', '<c-s>', function() vim.lsp.buf.signature_help() end,
+  {buffer=true}) vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with( vim.lsp.handlers['signature_help'],
+  {
+    border = 'single',
+    close_events = {"CursorMoved", "BufHidden", "InsertCharPre"},
+  }, opts )
+
 
 --
 -- SIGNATURE
@@ -157,24 +165,7 @@ keymap("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>", opts)
 --
 -- FORMATTING
 --
-
--- https://vi.stackexchange.com/a/41430
---function FormatFunction()
---  vim.lsp.buf.format({
---    async = true,
---    range = {
---      ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
---      ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
---    }
---  })
---end
-
 keymap("n", "gq", vim.lsp.buf.format, opts)
-
---keymap("x", "gF", "<Esc><cmd>lua FormatFunction()<CR>", opts)
---keymap("v", "gF", "<Esc><cmd>lua FormatFunction()<CR>", opts)
-
---keymap("v", "gF", "<ESC><CMD>lua vim.lsp.buf.range_formatting()<CR>", opts)
 
 
 -- ========================================================================= --
@@ -194,7 +185,7 @@ keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 --  nvim-tree
 -- ========================================================================= --
 
-keymap("n", "<leader>f", 
+keymap("n", "<leader>f",
   function ()
 --
 --  if nvim-tree is closed, open and focus it
@@ -216,53 +207,42 @@ keymap("n", "<leader>f",
   opts
 )
 
- 
+
 -- ========================================================================= --
 --  trouble.nvim
 -- ========================================================================= --
 
+-- keymap("n", "<leader>xx", "<CMD>Trouble diagnostics toggle<CR>",  opts)
 keymap("n", "<leader>xx",
-    function() 
-      require("trouble").toggle() 
-    end,
-  opts
-)
+  function ()
+    local trouble = require("trouble")
+    local currentBuf = vim.api.nvim_get_current_buf()
+    local currentBufFt = vim.api.nvim_get_option_value("filetype", { buf = currentBuf })
+    local opt = {
+      focus = true,
+      mode = "diagnostics",
+      filter = {
+        buf = currentBuf,
+      }
+    }
 
-keymap("n", "<leader>xw",
-    function() 
-      require("trouble").toggle("workspace_diagnostics") 
-    end,
-  opts
-)
+    if currentBufFt == "trouble" then
+      trouble.toggle(opt)
+    else
+      trouble.open(opt)
+    end
 
-keymap("n", "<leader>xd",
-    function() 
-      require("trouble").toggle("document_diagnostics") 
-    end,
-  opts
-)
+  end,
 
-keymap("n", "<leader>xq",
-    function() 
-      require("trouble").toggle("quickfix") 
-    end,
   opts
 )
 
 
-keymap("n", "<leader>xl",
-    function() 
-      require("trouble").toggle("loclist") 
-    end,
-  opts
-)
-
-keymap("n", "<leader>gr",
-    function() 
-      require("trouble").toggle("lsp_references") 
-    end,
-  opts
-)
+keymap("n", "<leader>xX", "<CMD>Trouble diagnostics toggle<CR>",  opts)
+keymap("n", "<leader>cs", "<CMD>Trouble symbols toggle focus=false<CR>",  opts)
+keymap("n", "<leader>cl", "<CMD>Trouble lsp toggle focus=false win.position=right<CR>",  opts)
+keymap("n", "<leader>xL", "<CMD>Trouble loclist toggle<CR>",  opts)
+keymap("n", "<leader>xQ", "<CMD>Trouble qflist toggle<CR>",  opts)
 
 
 -- ========================================================================= --
