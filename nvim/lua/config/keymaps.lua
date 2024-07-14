@@ -10,9 +10,11 @@ local keymap = vim.keymap.set
 -- s    select
 
 -- ========================================================================= --
--- General 
+-- GENERAL
 -- ========================================================================= --
+
 -- default leader key "\"
+keymap("n", " ", "<nop>", opts)
 vim.g.mapleader = " "
 
 -- no highlight
@@ -20,26 +22,44 @@ keymap("n", "nh", "<CMD>noh<CR>", opts)
 -- unmap command history
 keymap("n", "q:", "<nop>", opts)
 
+
 -- ========================================================================= --
---  Indentation
+--  COPY / PASTE SYSTEM CLIPBOARD 
 -- ========================================================================= --
 
--- indent
+keymap("n", '"+y', "<leader>y", opts)
+keymap("n", '"+Y', "<leader>Y", opts)
+keymap("n", '"+p', "<leader>p", opts)
+keymap("n", '"+P', "<leader>P", opts)
+
+
+-- ========================================================================= --
+--  INDENTATION
+-- ========================================================================= --
+
+-- INDENT
+-- ------------------------------------------------------------------------- -- 
+
 keymap("n", "<Tab>", ">>_", opts)
 keymap("x", "<Tab>", ">gv_", opts)
 keymap("v", "<Tab>", ">gv_", opts)
 -- <Tab> should operate as normal in insert mode.
 -- <C-T> indents when in insert mode.
 
--- de-indent
+
+-- DE-INDENT
+-- ------------------------------------------------------------------------- -- 
+
 keymap("i", "<S-Tab>", "<C-D>", opts)
 keymap("x", "<S-Tab>", "<gv$", opts)
 keymap("v", "<S-Tab>", "<gv$", opts)
 keymap("n", "<S-Tab>", "<<$", opts)
 
+
 -- ========================================================================= --
---  Buffers
+--  BUFFERS
 -- ========================================================================= --
+
 keymap("n", "]b", "<CMD>bnext<CR>", opts)
 keymap("n", "[b", "<CMD>bprev<CR>", opts)
 keymap("n", "bb", "<CMD>Telescope buffers<CR>", opts)
@@ -47,8 +67,9 @@ keymap("n", "bd", "<CMD>bdelete<CR>", opts)
 keymap("n", "bn", "<CMD>enew<CR>", opts)
 
 -- ========================================================================= --
--- Tabs
+-- TABS
 -- ========================================================================= --
+
 keymap("n", "]t", "<CMD>tabnext<CR>", opts)
 keymap("n", "[t", "<CMD>tabprevious<CR>", opts)
 keymap("n", "td", "<CMD>tabclose<CR>", opts)
@@ -56,8 +77,9 @@ keymap("n", "tt", "<CMD>tabs<CR>", opts)
 keymap("n", "tn", "<CMD>tabnew<CR>", opts)
 
 -- ========================================================================= --
---  Telescope
+--  TELESCOPE
 -- ========================================================================= --
+
 keymap("n", "ff", "<CMD>Telescope find_files<CR>", opts)
 keymap("n", "fg", "<CMD>Telescope live_grep<CR>", opts)
 keymap("n", "fb", "<CMD>Telescope current_buffer_fuzzy_find<CR>", opts)
@@ -67,7 +89,7 @@ keymap("n", "<leader>m", "<CMD>Telescope man_pages<CR>", opts)
 
 
 -- ========================================================================= --
--- Comment (defaults)
+-- COMMENT (defaults)
 -- ========================================================================= --
 -- `gcc` - Toggles the current line using linewise comment
 -- `gbc` - Toggles the current line using blockwise comment
@@ -81,16 +103,18 @@ keymap("n", "<leader>m", "<CMD>Telescope man_pages<CR>", opts)
 -- LSP
 -- ========================================================================= --
 
---
 -- LSP DECLARATIONS
---
+-- ------------------------------------------------------------------------- --
+
 --keymap("n", "gD", "<CMD>Telescope lsp_declarations<CR>", opts)
 --keymap("n", "gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
+keymap("n", "gf", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
 keymap("n", "gD", "<CMD>lua require('goto-preview').goto_preview_declaration()<CR>", opts)
 
---
+
 -- LSP DEFINITIONS
---
+-- ------------------------------------------------------------------------- --
+
 --keymap("n", "gd", "<CMD>lua vim.lsp.buf.definition()<CR>", opts)
 keymap("n", "gd", "<CMD>lua require('goto-preview').goto_preview_definition()<CR>", opts)
 --keymap("n", "gd", "<CMD>Telescope lsp_definitions<CR>", opts)
@@ -98,63 +122,62 @@ keymap("n", "gd", "<CMD>lua require('goto-preview').goto_preview_definition()<CR
 --keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions({jump_type='never'})<CR>", opts)
 
 --  quick peek, one line popup of definition
-keymap("n", "<leader>d",
- function ()
-  function preview_location_callback(_, result)
-    if result == nil or vim.tbl_isempty(result) then
-      return nil
-    end
-    vim.lsp.util.preview_location(result[1])
-  end
+keymap("n", "<leader>d", function()
+	function preview_location_callback(_, result)
+		if result == nil or vim.tbl_isempty(result) then
+			return nil
+		end
+		vim.lsp.util.preview_location(result[1])
+	end
 
-    local params = vim.lsp.util.make_position_params()
-    return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
-end,
-  opts
-)
- 
+	local params = vim.lsp.util.make_position_params()
+	return vim.lsp.buf_request(0, "textDocument/definition", params, preview_location_callback)
+end, opts)
 
---
+
 -- TYPE DEFINITIONS
---
+-- ------------------------------------------------------------------------- --
+
 --keymap("n", "gT", "<CMD>Telescope lsp_type_definitions<CR>", opts)
 keymap("n", "gT", "<CMD>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
 
---
+
 -- REFERENCES
---
+-- ------------------------------------------------------------------------- --
+
 -- keymap("n", "gr", "<CMD>lua vim.lsp.buf.references()<CR>", opts)
 -- keymap("n", "gr", "<CMD>Telescope lsp_references<CR>", opts)
 keymap("n", "gr", "<CMD>lua require('goto-preview').goto_preview_references()<CR>", opts)
-keymap('i', '<c-s>', function() vim.lsp.buf.signature_help() end,
-  {buffer=true}) vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with( vim.lsp.handlers['signature_help'],
-  {
-    border = 'single',
-    close_events = {"CursorMoved", "BufHidden", "InsertCharPre"},
-  }, opts )
 
 
---
 -- SIGNATURE
---
--- keymap("n", "<C-k>", "<CMD>lua vim.lsp.buf.signature_help()<CR>", opts)
+-- ------------------------------------------------------------------------- --
+
 keymap("n", "gs", "<CMD>lua vim.lsp.buf.signature_help()<CR>", opts)
 
---
+
 -- IMPLEMENTION
---
+-- ------------------------------------------------------------------------- --
+
 -- keymap("n", "gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", opts)
 keymap("n", "gi", "<CMD>Telescope lsp_implementations<CR>", opts)
 
---
+
 -- SYMBOLS
---
-keymap("n", "gI", "<CMD>Telescope lsp_document_symbols<CR>", opts)
+-- ------------------------------------------------------------------------- --
+
+keymap("n", "gI", "<CMD>lua require'telescope.builtin'.lsp_document_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
+-- keymap("n", "gI", "<CMD>Telescope lsp_document_symbols ignore_symbols=variable<CR>", opts)
+
+keymap("n", "<leader>gI", "<CMD>lua require'telescope.builtin'.lsp_workspace_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
+-- keymap("n", "<leader>gI", "<CMD>Telescope lsp_workspace_symbols ignore_symbols=variable<CR>", opts)
+
 keymap("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>", opts)
 
---
+
 -- DIAGNOSTICS
---
+-- ------------------------------------------------------------------------- --
+
 keymap("n", "[d", "<CMD>lua vim.diagnostic.goto_prev()<CR>", opts)
 keymap("n", "gl", "<CMD>lua vim.diagnostic.open_float()<CR>", opts)
 -- keymap("n", "gL", "<CMD>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
@@ -162,14 +185,15 @@ keymap("n", "gL", "<CMD>Telescope diagnostics<CR>", opts)
 keymap("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>", opts)
 -- keymap("n", "<leader>q", "<CMD>lua vim.diagnostic.setloclist()<CR>", opts)
 
---
+
 -- FORMATTING
---
+-- ------------------------------------------------------------------------- --
+
 keymap("n", "gq", vim.lsp.buf.format, opts)
 
 
 -- ========================================================================= --
--- Movement
+--  MOVEMENT
 -- ========================================================================= --
 keymap("n", "<A-j>", ":MoveLine(1)<CR>", opts)
 keymap("n", "<A-k>", ":MoveLine(-1)<CR>", opts)
@@ -182,7 +206,7 @@ keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 
 
 -- ========================================================================= --
---  nvim-tree
+--  NVIM-TREE
 -- ========================================================================= --
 
 keymap("n", "<leader>f",
@@ -209,7 +233,7 @@ keymap("n", "<leader>f",
 
 
 -- ========================================================================= --
---  trouble.nvim
+--  TROUBLE.NVIM
 -- ========================================================================= --
 
 -- keymap("n", "<leader>xx", "<CMD>Trouble diagnostics toggle<CR>",  opts)

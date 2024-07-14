@@ -18,6 +18,10 @@ local M = {
 			"hrsh7th/cmp-cmdline",
 			event = "InsertEnter",
 		},
+--		{
+--			"hrsh7th/cmp-nvim-lsp-signature-help",
+--			event = "InsertEnter",
+--		},
 		{
 			"hrsh7th/cmp-nvim-lua",
 			event = "InsertEnter",
@@ -150,9 +154,10 @@ function M.config()
 			{ name = "nvim_lsp" },
 			{ name = "nvim_lua" },
 			{ name = "luasnip" },
+--      { name = 'nvim_lsp_signature_help' },
 			{ name = "treesitter", keyword_length = 3 },
 			{ name = "buffer", keyword_length = 3 },
-			{ name = "path" },
+			{ name = "path", keyword_length = 3 },
 		},
 
 		confirm_opts = {
