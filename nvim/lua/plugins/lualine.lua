@@ -7,11 +7,49 @@ local M = {
 
 function M.config()
 	local icons = require("config.icons")
+  local lualine = require("lualine")
+
+
+  local function show_macro_recording()
+    local recording_register = vim.fn.reg_recording()
+    if recording_register == "" then
+        return ""
+    else
+        return "Recording @" .. recording_register
+    end
+  end
+
+  vim.api.nvim_create_autocmd("RecordingEnter", {
+    callback = function()
+      lualine.refresh({
+        place = { "statusline" },
+      })
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("RecordingLeave", {
+    callback = function()
+    local timer = vim.loop.new_timer()
+      timer:start(
+        50,
+        0,
+        function()
+          timer:stop()
+          timer:close()
+          vim.schedule_wrap(function()
+              lualine.refresh({
+                  place = { "statusline" },
+              })
+          end)
+        end
+      )
+    end,
+  })
 
 	-- override and hide the command line bar
 	vim.opt.cmdheight = 0
 
-	require("lualine").setup({
+	lualine.setup({
 		options = {
 			icons_enabled = true,
 
@@ -36,54 +74,52 @@ function M.config()
 				"NvimTree",
 			},
 
-			always_divide_middle  = true,
-			globalstatus          = false,
+			always_divide_middle = true,
+			globalstatus = false,
 			refresh = {
-				statusline  = 1000,
-				tabline     = 1000,
-				winbar      = 1000,
+				statusline = 1000,
+				tabline = 1000,
+				winbar = 1000,
 			},
 		},
 
-
 		sections = {
-			lualine_a = { "mode" },
+			lualine_a = { "mode",
+                    {
+                      "macro-recording",
+                      fmt = show_macro_recording,
+                    }
+      },
 			lualine_b = {
 				{
-					"branch",
+					"filename",
 					colored = true,
 					color = {
 						bg = "#16161e",
 					},
 				},
-				{
-					"diff",
-					colored = true,
-					color = {
-						bg = "#16161e",
-					},
-					diff_color = {
-						added = {
-							fg = "#42b545", --'LuaLineDiffAdd',
-							bg = "#16161e",
-						},
-						modified = {
-							fg = "#ABABAB", --'LuaLineDiffChange',
-							bg = "#16161e",
-						},
-						removed = {
-							fg = "#c14242", --'LuaLineDiffDelete',
-							bg = "#16161e",
-						},
-					},
-					symbols = {
-						added     = " ",
-						modified  = " ",
-						removed   = " ",
-					},
-				},
-			},
-
+				-- {
+				-- 	"filetype",
+				-- 	colored = true,
+				-- 	color = {
+				-- 		bg = "#16161e",
+				-- 	},
+				-- },
+				-- {
+				-- 	"encoding",
+				-- 	colored = true,
+				-- 	color = {
+				-- 		bg = "#16161e",
+				-- 	},
+				-- },
+				-- {
+				-- 	"fileformat",
+				-- 	colored = true,
+				-- 	color = {
+				-- 		bg = "#16161e",
+				-- 	},
+				-- },
+		  },
 			lualine_c = {
 				{
 					"diagnostics",
@@ -113,14 +149,49 @@ function M.config()
 
 					symbols = {
 						error = icons.diagnostics["Error"] .. " ",
-						warn  = icons.diagnostics["Warning"] .. " ",
-						info  = icons.diagnostics["Information"] .. " ",
-						hint  = icons.diagnostics["Hint"] .. " ",
+						warn = icons.diagnostics["Warning"] .. " ",
+						info = icons.diagnostics["Information"] .. " ",
+						hint = icons.diagnostics["Hint"] .. " ",
 					},
 				},
 			},
 
-			lualine_x = { "filename", "encoding", "fileformat", "filetype" },
+			lualine_x = {
+				{
+					"branch",
+					colored = true,
+					color = {
+						bg = "#16161e",
+					},
+				},
+				{
+					"diff",
+					colored = true,
+					color = {
+						bg = "#16161e",
+					},
+					diff_color = {
+						added = {
+							fg = "#42b545", --'LuaLineDiffAdd',
+							bg = "#16161e",
+						},
+						modified = {
+							fg = "#ABABAB", --'LuaLineDiffChange',
+							bg = "#16161e",
+						},
+						removed = {
+							fg = "#c14242", --'LuaLineDiffDelete',
+							bg = "#16161e",
+						},
+					},
+					symbols = {
+						added = " ",
+						modified = " ",
+						removed = " ",
+					},
+				},
+			},
+
 			lualine_y = { "selectioncount" },
 			lualine_z = { "location" },
 		},
