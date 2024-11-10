@@ -2,90 +2,40 @@ local M = {
 	"hrsh7th/nvim-cmp",
 	event = "InsertEnter",
 	dependencies = {
-		{
-			"hrsh7th/cmp-nvim-lsp",
-			event = "InsertEnter",
+		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path",
+		"hrsh7th/cmp-cmdline",
+		"hrsh7th/cmp-nvim-lua",
+		"ray-x/cmp-treesitter",
 		},
-		{
-			"hrsh7th/cmp-buffer",
-			event = "InsertEnter",
-		},
-		{
-			"hrsh7th/cmp-path",
-			event = "InsertEnter",
-		},
-		{
-			"hrsh7th/cmp-cmdline",
-			event = "InsertEnter",
-		},
---		{
---			"hrsh7th/cmp-nvim-lsp-signature-help",
---			event = "InsertEnter",
---		},
-		{
-			"hrsh7th/cmp-nvim-lua",
-			event = "InsertEnter",
-		},
-		{
-			"ray-x/cmp-treesitter",
-			event = "InsertEnter",
-		},
-		{
-			"saadparwaiz1/cmp_luasnip",
-			event = "InsertEnter",
-		},
-		{
-			"L3MON4D3/LuaSnip",
-			event = "InsertEnter",
-			dependencies = {
-				"rafamadriz/friendly-snippets",
-			},
-		},
-	},
 }
 
 function M.config()
 	local cmp = require("cmp")
 	local icons = require("config.icons")
-	local luasnip = require("luasnip")
 
 	cmp.setup({
 
-		-- gray
-		vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { bg = "NONE", strikethrough = true, fg = "#808080" }),
-		-- blue
-		vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { bg = "NONE", fg = "#569CD6" }),
-		vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { link = "CmpIntemAbbrMatch" }),
-		-- light blue
-		vim.api.nvim_set_hl(0, "CmpItemKindVariable", { bg = "NONE", fg = "#9CDCFE" }),
-		vim.api.nvim_set_hl(0, "CmpItemKindInterface", { link = "CmpItemKindVariable" }),
-		vim.api.nvim_set_hl(0, "CmpItemKindText", { link = "CmpItemKindVariable" }),
-		-- pink
-		vim.api.nvim_set_hl(0, "CmpItemKindFunction", { bg = "NONE", fg = "#C586C0" }),
-		vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "CmpItemKindFunction" }),
-		-- front
-		vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { bg = "NONE", fg = "#D4D4D4" }),
-		vim.api.nvim_set_hl(0, "CmpItemKindProperty", { link = "CmpItemKindKeyword" }),
-		vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" }),
-
-		--  disable completion in comments
+    -- disable auto-complete in certain contexts:
 		enabled = function()
 			local context = require("cmp.config.context")
-			--  keep command mode completion enabled when cursor is in a comment
-			if vim.api.nvim_get_mode().mode == "c" then
-				return true
-			else
-				return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
-			end
-		end,
 
-		-- snippets
-		require("luasnip/loaders/from_vscode").lazy_load(),
-		snippet = {
-			expand = function(args)
-				luasnip.lsp_expand(args.body) -- For `luasnip` users.
-			end,
-		},
+      -- stop auto-complete in telescope prompt
+      local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
+      if buftype == 'prompt' then
+        return false
+      end
+
+      -- disable auto-complete for comments
+      local context = require('cmp.config.context')
+      if context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
+        return false
+      end
+
+      -- enable auto-complete otherwise
+      return true
+		end,
 
 		mapping = cmp.mapping.preset.insert({
 			["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
@@ -120,7 +70,6 @@ function M.config()
 				vim_item.menu = ({
 					nvim_lsp = "",
 					nvim_lua = "",
-					luasnip = "",
 					treesitter = "",
 					buffer = "",
 					path = "",
@@ -131,8 +80,7 @@ function M.config()
 					vim_item.kind = icons.kind.Treesitter
 				end
 
-				--  trim the completion text to max of
-				--  50 chars
+				--  trim the completion text to max of 50 chars
 				--
 				--  Yuki Uthman
 				--  youtube.com/watch?v=uDPZ2yJS6os
@@ -153,8 +101,6 @@ function M.config()
 		sources = {
 			{ name = "nvim_lsp" },
 			{ name = "nvim_lua" },
-			{ name = "luasnip" },
---      { name = 'nvim_lsp_signature_help' },
 			{ name = "treesitter", keyword_length = 3 },
 			{ name = "buffer", keyword_length = 3 },
 			{ name = "path", keyword_length = 3 },

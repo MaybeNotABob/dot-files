@@ -65,7 +65,6 @@ keymap("n", "[b", "<CMD>bprev<CR>", opts)
 keymap("n", "bb", "<CMD>Telescope buffers<CR>", opts)
 keymap("n", "bd", "<CMD>bdelete<CR>", opts)
 keymap("n", "bn", "<CMD>enew<CR>", opts)
-
 -- ========================================================================= --
 -- TABS
 -- ========================================================================= --
@@ -80,12 +79,12 @@ keymap("n", "tn", "<CMD>tabnew<CR>", opts)
 --  TELESCOPE
 -- ========================================================================= --
 
-keymap("n", "ff", "<CMD>Telescope find_files<CR>", opts)
-keymap("n", "fg", "<CMD>Telescope live_grep<CR>", opts)
-keymap("n", "fb", "<CMD>Telescope current_buffer_fuzzy_find<CR>", opts)
-keymap("n", "fh", "<CMD>Telescope help_tags<CR>", opts)
-keymap("n", "fr", "<CMD>Telescope registers<CR>", opts)
-keymap("n", "<leader>m", "<CMD>Telescope man_pages<CR>", opts)
+keymap("n", "ff", "<CMD>Telescope find_files initial_mode=insert theme=ivy<CR>", opts)
+keymap("n", "fg", "<CMD>Telescope live_grep  initial_mode=insert theme=ivy<CR>", opts)
+keymap("n", "fb", "<CMD>Telescope current_buffer_fuzzy_find initial_mode=insert theme=ivy<CR>", opts)
+keymap("n", "fh", "<CMD>Telescope help_tags initial_mode=insert theme=ivy<CR>", opts)
+keymap("n", "fr", "<CMD>Telescope registers initial_mode=insert theme=ivy<CR>", opts)
+keymap("n", "<leader>m", "<CMD>Telescope man_pages theme-ivy<CR>", opts)
 
 
 -- ========================================================================= --
@@ -166,10 +165,12 @@ keymap("n", "gi", "<CMD>Telescope lsp_implementations<CR>", opts)
 -- SYMBOLS
 -- ------------------------------------------------------------------------- --
 
-keymap("n", "gI", "<CMD>lua require'telescope.builtin'.lsp_document_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
+keymap("n", "gI", "<CMD>lua require'telescope.builtin'.lsp_document_symbols()<CR>", opts)
+-- keymap("n", "gI", "<CMD>lua require'telescope.builtin'.lsp_document_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
 -- keymap("n", "gI", "<CMD>Telescope lsp_document_symbols ignore_symbols=variable<CR>", opts)
 
-keymap("n", "<leader>gI", "<CMD>lua require'telescope.builtin'.lsp_workspace_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
+keymap("n", "<leader>gI", "<CMD>lua require'telescope.builtin'.lsp_workspace_symbols()<CR>", opts)
+-- keymap("n", "<leader>gI", "<CMD>lua require'telescope.builtin'.lsp_workspace_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
 -- keymap("n", "<leader>gI", "<CMD>Telescope lsp_workspace_symbols ignore_symbols=variable<CR>", opts)
 
 keymap("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>", opts)

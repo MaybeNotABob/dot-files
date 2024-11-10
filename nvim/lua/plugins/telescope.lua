@@ -75,6 +75,8 @@ function M.config ()
 
         n = {
           ["<esc>"] = actions.close,
+          ["bd"] = actions.delete_buffer,
+
           ["<CR>"] = actions.select_default,
           ["<C-x>"] = actions.select_horizontal,
           ["<C-v>"] = actions.select_vertical,
@@ -114,18 +116,49 @@ function M.config ()
       -- }
       -- Now the picker_config_key will be applied every time you call this
       -- builtin picker
+        --
       diagnostics = {
-          theme = "dropdown",
+          theme = "ivy",
+          severity_sort = true, 
+          initial_mode = "normal",
       },
-  --    lsp_definitions = {
-  --        theme = "dropdown",
-  --       jump_type = "never",
-  --    },
-  --    lsp_declarations = {
-  --        theme = "dropdown",
-  --       jump_type = "never",
-  --    },
-    },
+
+      buffers = {
+          theme = "ivy",
+          sort_mru = true,
+          sort_lastused = true,
+          initial_mode = "normal",
+      },
+
+      lsp_definitions = {
+        theme = "ivy",
+        initial_mode = "normal",
+      },
+
+      lsp_declarations = {
+        theme = "ivy",
+        initial_mode = "normal",
+      },
+
+      lsp_document_symbols = {
+        theme = "ivy",
+        initial_mode = "normal",
+      },
+
+      lsp_workspace_symbols = {
+        theme = "ivy",
+        initial_mode = "normal",
+      },
+
+      lsp_dynamic_workspace_symbols = {
+        theme = "ivy",
+        initial_mode = "normal",
+      },
+
+
+
+
+    }, 
 }
 
 end

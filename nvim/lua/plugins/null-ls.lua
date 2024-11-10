@@ -25,19 +25,19 @@ function M.config()
 
     debug = false,
     sources = {
-        formatting.stylua,
         formatting.clang_format.with {
             extra_args = {
               '--style={BasedOnStyle: google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true}'
             }
         },
-        formatting.black.with {
-            extra_args = {
-              "--line-length=120",
-              "--skip-string-normalization"
-            },
-        },
-        formatting.stylua.with {},
+        -- null_ls.builtins.diagnostics.python-lsp-server,
+
+        -- formatting.pyright.with {
+        --     extra_args = {
+        --       "--line-length=120",
+        --       "--skip-string-normalization"
+        --     },
+        -- },
     },
   }
 end

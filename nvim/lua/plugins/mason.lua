@@ -4,6 +4,7 @@ local M = {
 
   dependencies = {
     "williamboman/mason-lspconfig",
+    "jay-babu/mason-null-ls.nvim",
     "neovim/nvim-lspconfig",
     "hrsh7th/cmp-nvim-lsp",
   },
@@ -27,14 +28,14 @@ function M.config()
   })
 
   local mason_lspconfig = require("mason-lspconfig")
-
+  
   mason_lspconfig.setup({
       -- list of servers for mason to install
-      ensure_installed = {
-      "clangd",         --  C/C++
-      "pyright",        --  Python
+    ensure_installed = {
+      "clangd",								--  C/C++
     }
   })
+
 
   for _, server in ipairs(mason_lspconfig.get_installed_servers()) do
 
@@ -43,8 +44,8 @@ function M.config()
       --  turn off formatting as this will be carried out by
       --  null-ls
       local on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider       = false
-          client.server_capabilities.documentRangeFormattingProvider  = false
+          --client.server_capabilities.documentFormattingProvider       = false
+          --client.server_capabilities.documentRangeFormattingProvider  = false
       end
 
       capabilities.offsetEncoding = { "utf-16" }
@@ -56,7 +57,24 @@ function M.config()
 
   end
 
+	-- auto configure formatters and ensure tooling 
+	-- is installed
+	local mason_null_ls = require("mason-null-ls")
+	mason_null_ls.setup({
+    ensure_installed = {
+    	"clang-format",								--  C/C++
+    	
+    },
+    automatic_installation = true,
+    handlers = {},
+	})
 
+
+	-- override formatting settings
+	-- e.g. clang-format
+  local null_ls = require("plugins.null-ls")
+
+  
 end
 
 
