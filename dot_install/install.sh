@@ -12,7 +12,7 @@ USER_LOCAL="${USER_HOME_DIR}"/.local
 USER_CACHE="${USER_HOME_DIR}"/.cache
 USER_LOCAL_SHARE="${USER_LOCAL}"/share
 # -- DOT FILES
-DOT_FILES_DIR="${USER_CONFIG_DIR}"/dotfiles
+DOT_FILES_DIR="${USER_CONFIG_DIR}"/dot-files
 # -- FONTS
 FONTS_LOCAL_SHARE="${USER_LOCAL_SHARE}"/fonts
 # -- TMUX
@@ -178,10 +178,31 @@ EOF
 # ------- NERD FONT -------
 function install_nerd_fonts () {
 
-FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/DroidSansMono.zip"
-FONT_ZIP="DroidSansMono.zip"
+FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/RobotoMono.zip"
+FONT_ZIP="RobotoMono.zip"
 FONT_CACHE="${USER_CACHE}"/fontconfig
 FONT_USER="RobotoMono Nerd Font Mono Regular 11"
+
+FONT_XML="<?xml version=\"1.0\"?>
+<!DOCTYPE fontconfig SYSTEM \"fonts.dtd\">
+<fontconfig>
+  <dir>/usr/local/share/fonts</dir>
+  <alias>
+    <family>monospace</family>
+    <prefer>
+      <family>Roboto Mono Nerd Font Mono</family>
+    </prefer>
+  </alias>
+  <match>
+    <edit mode=\"assign\" name=\"family\">
+      <string>Roboto Mono Nerd Font Mono</string>
+    </edit>
+    <edit mode=\"assign\" name=\"size\">
+      <double>11</double>
+    </edit>
+  </match>
+</fontconfig>"
+
 
 # ------- USER CALLING SUDO -------
 sudo -E -u "${SUDO_USER}" bash <<EOF
@@ -224,12 +245,13 @@ sudo -E -u "${SUDO_USER}" bash <<EOF
 	
 		# set the terminal font to use a nerd font with included
 		# glyphs for neovim.
-		dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-system-font false
-		dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "${FONT_USER}"
-		echo "Terminal font has been set to ${FONT_USER}"
+
 
 EOF
 # ------- END USER CALLING SUDO -------
+
+echo "${FONT_XML}" | sudo tee /etc/fonts/conf.d/69-roboto-mono-nerd-font.conf
+echo "Terminal font has been set to ${FONT_USER}"
 }
 
 
@@ -240,10 +262,10 @@ EOF
 
 # -- SUDO PERMISSIONS
 
-install_toolchains
+#install_toolchains
 
 # -- USER PERMISSIONS
 
-tmux_settings
-neovim_settings
+#tmux_settings
+#neovim_settings
 install_nerd_fonts
