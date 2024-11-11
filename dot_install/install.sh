@@ -175,97 +175,98 @@ EOF
 }
 
 
+function download_extract() {
+  URL=$1
+  OUTPUT_FILE=$2
+  OUTPUT_DIR=$3
+
+  if ! curl -k -L -o "${OUTPUT_FILE}" "${URL}"; then
+      echo "Error: download failed"
+      exit 1
+  fi
+
+  mkdir -p "${OUTPUT_DIR}"
+
+  if ! unzip -o "${OUTPUT_FILE}" -d "${OUTPUT_DIR}"; then
+      echo "Error: Font extraction failed"
+      rm -f "$OUTPUT_FILE"
+      exit 1
+  fi
+
+  if [ -e "${OUTPUT_FILE}" ]; then
+    rm -f "$OUTPUT_FILE"
+  fi
+}
+
 # ------- NERD FONT -------
 function install_nerd_fonts () {
 
-FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/RobotoMono.zip"
-FONT_ZIP="RobotoMono.zip"
-FONT_CACHE="${USER_CACHE}"/fontconfig
-FONT_USER="RobotoMono Nerd Font Mono Regular 11"
+FONT_SIZE="11"
+SANS_FONT_NAME="RobotoMono Nerd Font Propo"
+MONO_FONT_NAME="RobotoMono Nerd Font"
 
-FONT_XML="<?xml version=\"1.0\"?>
+FONT_ZIP="RobotoMono.zip"
+FONT_ZIP_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/RobotoMono.zip"
+FONT_DIR="/usr/share/fonts/truetype/roboto-mono-nerd"
+
+CONFIG_FILE="/etc/fonts/conf.d/99-roboto-nerd-fonts.conf"
+
+# Define Fontconfig XML configuration as a variable
+FONTCONFIG_XML="<?xml version=\"1.0\"?>
 <!DOCTYPE fontconfig SYSTEM \"fonts.dtd\">
 <fontconfig>
-  <dir>/usr/local/share/fonts</dir>
-  <alias>
-    <family>monospace</family>
-    <prefer>
-      <family>Roboto Mono Nerd Font Mono</family>
-    </prefer>
-  </alias>
-  <match>
-    <edit mode=\"assign\" name=\"family\">
-      <string>Roboto Mono Nerd Font Mono</string>
+  <!-- Set Roboto Nerd Font as the default sans-serif font -->
+  <match target=\"pattern\">
+    <test qual=\"any\" name=\"family\">
+      <string>sans-serif</string>
+    </test>
+    <edit name=\"family\" mode=\"assign\" binding=\"strong\">
+      <string>${SANS_FONT_NAME}</string>
     </edit>
-    <edit mode=\"assign\" name=\"size\">
-      <double>11</double>
+    <edit name=\"size\" mode=\"assign\">
+      <double>${FONT_SIZE}</double>
+    </edit>
+  </match>
+
+  <!-- Set Roboto Mono Nerd Font as the default monospace font -->
+  <match target=\"pattern\">
+    <test qual=\"any\" name=\"family\">
+      <string>monospace</string>
+    </test>
+    <edit name=\"family\" mode=\"assign\" binding=\"strong\">
+      <string>${MONO_FONT_NAME}</string>
+    </edit>
+    <edit name=\"size\" mode=\"assign\">
+      <double>${FONT_SIZE}</double>
     </edit>
   </match>
 </fontconfig>"
 
+ 
+  # url, output zip name, output dir
+  download_extract "$FONT_ZIP_URL" "$FONT_ZIP" "$FONT_DIR"
 
-# ------- USER CALLING SUDO -------
-sudo -E -u "${SUDO_USER}" bash <<EOF
-
-		# check if dir exists, if not create it
-		# ~/.local/share/fonts/
-		
-		if [ ! -d "${FONTS_LOCAL_SHARE}" ]; then
-			echo "Creating fonts directory ... ${FONTS_LOCAL_SHARE}"
-			mkdir -p "${FONTS_LOCAL_SHARE}"
-		fi
-
-		if [ ! -d "${FONT_CACHE}" ]; then
-			echo "Creating fonts directory ... ${FONT_CACHE}"
-			mkdir -p "${FONT_CACHE}"
-		fi
-	
-		# download nerd font zip file
-		if ! curl -k -L -o "${FONT_ZIP}" "${FONT_URL}"; then
-				echo "Error: Font download failed"
-				exit 1
-		fi
-
-		if ! unzip -o "${FONT_ZIP}" -d "${FONTS_LOCAL_SHARE}"; then
-				echo "Error: Font extraction failed"
-				rm -f "$FONT_ZIP"
-				exit 1
-		fi
-
-		echo "Updating font cache..."
-		if command -v fc-cache >/dev/null; then
-			FONTCONFIG_PATH="${FONT_CACHE}" XDG_CACHE_HOME="$USER_CACHE" fc-cache -f "${FONTS_LOCAL_SHARE}"
-		fi
-
-		if [ -e "${FONT_ZIP}" ]; then
-			rm "${FONT_ZIP}"
-		fi
-		
-		echo "DroidSansMono Nerd Font installed: ${FONTS_LOCAL_SHARE}"
-	
-		# set the terminal font to use a nerd font with included
-		# glyphs for neovim.
+  fc-cache -fv > /dev/null
 
 
-EOF
-# ------- END USER CALLING SUDO -------
+  echo "$FONTCONFIG_XML" | tee "$CONFIG_FILE" > /dev/null
 
-echo "${FONT_XML}" | sudo tee /etc/fonts/conf.d/69-roboto-mono-nerd-font.conf
-echo "Terminal font has been set to ${FONT_USER}"
+  echo "Sans font set to: $(fc-match sans)"
+  echo "Monospace font set to: $(fc-match monospace)"
 }
 
 
 
 ##########################
-# 				MAIN
+#    MAIN
 ##########################
 
 # -- SUDO PERMISSIONS
 
-#install_toolchains
+install_toolchains
 
 # -- USER PERMISSIONS
 
-#tmux_settings
-#neovim_settings
+tmux_settings
+neovim_settings
 install_nerd_fonts
