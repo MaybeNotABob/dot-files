@@ -61,7 +61,7 @@ software-properties-common \
 xclip \
 xsel \
 unzip \
-
+fontconfig \
 
 # ------- INSTALL ADDITIONAL SOURCES -------
 sudo add-apt-repository ppa:neovim-ppa/unstable -y
@@ -267,6 +267,7 @@ install_toolchains
 
 # -- USER PERMISSIONS
 
+download_dotfiles
+install_nerd_fonts
 tmux_settings
 neovim_settings
-install_nerd_fonts
