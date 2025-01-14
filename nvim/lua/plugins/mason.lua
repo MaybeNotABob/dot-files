@@ -72,7 +72,7 @@ function M.config()
 
 	-- override formatting settings
 	-- e.g. clang-format
-  local null_ls = require("plugins.null-ls").config()
+  local null_ls = require("plugins.null-ls")
 
   
 end
