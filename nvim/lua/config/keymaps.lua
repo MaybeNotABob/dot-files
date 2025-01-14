@@ -191,6 +191,7 @@ keymap("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>", opts)
 -- ------------------------------------------------------------------------- --
 
 keymap("n", "gq", vim.lsp.buf.format, opts)
+keymap("v", "gq", vim.lsp.buf.format, opts)
 
 
 -- ========================================================================= --

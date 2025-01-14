@@ -44,8 +44,8 @@ function M.config()
       --  turn off formatting as this will be carried out by
       --  null-ls
       local on_attach = function(client, bufnr)
-          --client.server_capabilities.documentFormattingProvider       = false
-          --client.server_capabilities.documentRangeFormattingProvider  = false
+          client.server_capabilities.documentFormattingProvider       = false
+          client.server_capabilities.documentRangeFormattingProvider  = false
       end
 
       capabilities.offsetEncoding = { "utf-16" }
