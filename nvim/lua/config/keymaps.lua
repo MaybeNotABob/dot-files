@@ -62,7 +62,7 @@ keymap("n", "<S-Tab>", "<<$", opts)
 
 keymap("n", "]b", "<CMD>bnext<CR>", opts)
 keymap("n", "[b", "<CMD>bprev<CR>", opts)
-keymap("n", "bb", "<CMD>Telescope buffers<CR>", opts)
+keymap("n", "<leader>bb", "<CMD>Telescope buffers<CR>", opts)
 keymap("n", "bd", "<CMD>bdelete<CR>", opts)
 keymap("n", "bn", "<CMD>enew<CR>", opts)
 -- ========================================================================= --
@@ -72,7 +72,7 @@ keymap("n", "bn", "<CMD>enew<CR>", opts)
 keymap("n", "]t", "<CMD>tabnext<CR>", opts)
 keymap("n", "[t", "<CMD>tabprevious<CR>", opts)
 keymap("n", "td", "<CMD>tabclose<CR>", opts)
-keymap("n", "tt", "<CMD>tabs<CR>", opts)
+keymap("n", "<leader>tt", "<CMD>tabs<CR>", opts)
 keymap("n", "tn", "<CMD>tabnew<CR>", opts)
 
 -- ========================================================================= --
@@ -107,14 +107,14 @@ keymap("n", "<leader>m", "<CMD>Telescope man_pages theme-ivy<CR>", opts)
 
 --keymap("n", "gD", "<CMD>Telescope lsp_declarations<CR>", opts)
 --keymap("n", "gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
-keymap("n", "gf", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
+keymap("n", "gF", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
 keymap("n", "gD", "<CMD>lua require('goto-preview').goto_preview_declaration()<CR>", opts)
 
 
 -- LSP DEFINITIONS
 -- ------------------------------------------------------------------------- --
 
---keymap("n", "gd", "<CMD>lua vim.lsp.buf.definition()<CR>", opts)
+keymap("n", "gf", "<CMD>lua vim.lsp.buf.definition()<CR>", opts)
 keymap("n", "gd", "<CMD>lua require('goto-preview').goto_preview_definition()<CR>", opts)
 --keymap("n", "gd", "<CMD>Telescope lsp_definitions<CR>", opts)
 --keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions<CR>", opts)
