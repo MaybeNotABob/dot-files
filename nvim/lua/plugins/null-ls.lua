@@ -27,7 +27,26 @@ function M.config()
     sources = {
         formatting.clang_format.with {
             extra_args = {
-              '--style={BasedOnStyle: google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true}'
+                  "--style=" ..
+                    [[{
+                      BasedOnStyle: Google, 
+                      BreakBeforeBraces: Allman,
+                      AlignConsecutiveAssignments: true,
+                      IndentWidth: 4,
+                      UseTab: Never,
+                      TabWidth: 4,
+                      AllowShortFunctionsOnASingleLine: None,
+                      AllowShortBlocksOnASingleLine: Empty,
+                      AllowShortIfStatementsOnASingleLine: Never,
+                      AllowShortEnumsOnASingleLine: false,
+                      AlignConsecutiveMacros: true,
+                      IncludeBlocks: Preserve,
+                      IncludeCategories: [
+                        { Regex: "^<.*>$", Priority: 1 },
+                        { Regex: "^\".*\"", Priority: 2 }
+                      ],
+                      SortIncludes: true,
+                    }]]
             }
         },
         -- null_ls.builtins.diagnostics.python-lsp-server,
