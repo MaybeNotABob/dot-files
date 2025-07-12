@@ -38,8 +38,13 @@ function M.config()
   -- })
 
   local cmp_nvim_lsp = require("cmp_nvim_lsp")
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  -- local capabilities = cmp_nvim_lsp.default_capabilities()
+  -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local capabilities = cmp_nvim_lsp.default_capabilities()
+
+      capabilities.textDocument.foldingRange = {
+          dynamicRegistration = false,
+          lineFoldingOnly = true,
+      }
       capabilities.offsetEncoding     = { "utf-16" }
       capabilities.positionEncodings  = { "utf-16" } 
 
@@ -50,6 +55,12 @@ function M.config()
   local on_attach = function(client, bufnr)
       client.server_capabilities.documentFormattingProvider       = false
       client.server_capabilities.documentRangeFormattingProvider  = false
+
+      if client.server_capabilities.foldingRangeProvider then
+          vim.api.nvim_buf_set_option(bufnr, "foldmethod", "expr")
+          vim.api.nvim_buf_set_option(bufnr, "foldexpr", "v:lua.vim.lsp.foldexpr()")
+      end
+
   end
 
   for _, server in ipairs(mason_lspconfig.get_installed_servers()) do

@@ -118,7 +118,7 @@ vim.opt.cursorline = true
 
 -- show line numbers
 vim.opt.number = true
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 
 -- always show the side coloumn
 vim.opt.signcolumn = "yes"
@@ -152,4 +152,17 @@ vim.cmd [[ :filetype indent off	]]
 -- enable status bar
 vim.opt.laststatus = 2
 
-
+  -- code folding
+  -- zR (open all folds)
+  -- zM (close all open folds)
+  -- za (toggle fold at cursor)
+  -- https://neovim.io/doc/user/fold.html
+  vim.opt.foldcolumn = "1"
+  vim.opt.fillchars = 'fold: ,foldopen:,foldsep: ,foldclose:,eob: ' 
+  vim.opt.foldtext = ""
+  vim.opt.foldlevel = 99
+  vim.opt.foldlevelstart = 99
+  vim.opt.foldnestmax = 4
+  vim.opt.foldmethod = "expr"
+  vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  vim.opt.foldenable = true 
