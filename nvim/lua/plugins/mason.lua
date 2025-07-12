@@ -1,16 +1,16 @@
 local M = {
-  "williamboman/mason.nvim",
+  "mason-org/mason-lspconfig.nvim",
   lazy = false,
 
   dependencies = {
-    "williamboman/mason-lspconfig",
+    "mason-org/mason.nvim",
     "jay-babu/mason-null-ls.nvim",
     "neovim/nvim-lspconfig",
     "hrsh7th/cmp-nvim-lsp",
   },
 
   cmd = {
-    "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate"
+    "Mason", "MasonInstall", "MasonUpdate"
   },
 
 }
@@ -29,30 +29,37 @@ function M.config()
 
   local mason_lspconfig = require("mason-lspconfig")
   
-  mason_lspconfig.setup({
-      -- list of servers for mason to install
-    ensure_installed = {
-      "clangd",								--  C/C++
-    }
-  })
+  -- mason_lspconfig.setup({
+  --     -- list of servers for mason to install
+  --   automatic_enable = false,
+  --   ensure_installed = {
+  --     "clangd",								--  C/C++
+  --   }
+  -- })
 
+  local cmp_nvim_lsp = require("cmp_nvim_lsp")
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  -- local capabilities = cmp_nvim_lsp.default_capabilities()
+      capabilities.offsetEncoding     = { "utf-16" }
+      capabilities.positionEncodings  = { "utf-16" } 
+
+  local lspconfig = require("lspconfig")
+
+  --  turn off formatting as this will be carried out by
+  --  null-ls
+  local on_attach = function(client, bufnr)
+      client.server_capabilities.documentFormattingProvider       = false
+      client.server_capabilities.documentRangeFormattingProvider  = false
+  end
 
   for _, server in ipairs(mason_lspconfig.get_installed_servers()) do
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- local server_capabilities = vim.tbl_deep_extend("force", {}, capabilities)
 
-      --  turn off formatting as this will be carried out by
-      --  null-ls
-      local on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider       = false
-          client.server_capabilities.documentRangeFormattingProvider  = false
-      end
-
-      capabilities.offsetEncoding = { "utf-16" }
-
-      require("lspconfig")[server].setup({
-          on_attach     = on_attach,
-          capabilities  = capabilities,
+      lspconfig[server].setup({
+          on_attach = on_attach,
+          capabilities = capabilities,
+          -- capabilities = server_capabilities,
       })
 
   end

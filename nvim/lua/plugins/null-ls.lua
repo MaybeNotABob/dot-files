@@ -16,7 +16,7 @@ function M.config()
 
   null_ls.setup{
     --  ***** workaround *****
-    --  force utf-8
+    --  force utf-8 or utf-16
     --  https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428
     on_init = function(new_client, _)
     new_client.offset_encoding = "utf-16"
@@ -27,26 +27,7 @@ function M.config()
     sources = {
         formatting.clang_format.with {
             extra_args = {
-                  "--style=" ..
-                    [[{
-                      BasedOnStyle: Google, 
-                      BreakBeforeBraces: Allman,
-                      AlignConsecutiveAssignments: true,
-                      IndentWidth: 4,
-                      UseTab: Never,
-                      TabWidth: 4,
-                      AllowShortFunctionsOnASingleLine: None,
-                      AllowShortBlocksOnASingleLine: Empty,
-                      AllowShortIfStatementsOnASingleLine: Never,
-                      AllowShortEnumsOnASingleLine: false,
-                      AlignConsecutiveMacros: true,
-                      IncludeBlocks: Preserve,
-                      IncludeCategories: [
-                        { Regex: "^<.*>$", Priority: 1 },
-                        { Regex: "^\".*\"", Priority: 2 }
-                      ],
-                      SortIncludes: true,
-                    }]]
+              '--style={BasedOnStyle: google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true}'
             }
         },
         -- null_ls.builtins.diagnostics.python-lsp-server,

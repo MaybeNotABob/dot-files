@@ -62,7 +62,7 @@ keymap("n", "<S-Tab>", "<<$", opts)
 
 keymap("n", "]b", "<CMD>bnext<CR>", opts)
 keymap("n", "[b", "<CMD>bprev<CR>", opts)
-keymap("n", "<leader>bb", "<CMD>Telescope buffers<CR>", opts)
+keymap("n", "<leader>b", "<CMD>Telescope buffers<CR>", opts)
 keymap("n", "bd", "<CMD>bdelete<CR>", opts)
 keymap("n", "bn", "<CMD>enew<CR>", opts)
 -- ========================================================================= --
@@ -72,7 +72,7 @@ keymap("n", "bn", "<CMD>enew<CR>", opts)
 keymap("n", "]t", "<CMD>tabnext<CR>", opts)
 keymap("n", "[t", "<CMD>tabprevious<CR>", opts)
 keymap("n", "td", "<CMD>tabclose<CR>", opts)
-keymap("n", "<leader>tt", "<CMD>tabs<CR>", opts)
+keymap("n", "<leader>t", "<CMD>tabs<CR>", opts)
 keymap("n", "tn", "<CMD>tabnew<CR>", opts)
 
 -- ========================================================================= --
@@ -179,11 +179,11 @@ keymap("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>", opts)
 -- DIAGNOSTICS
 -- ------------------------------------------------------------------------- --
 
-keymap("n", "[d", "<CMD>lua vim.diagnostic.goto_prev()<CR>", opts)
+keymap("n", "[d", "<CMD>lua vim.diagnostic.jump({count=-1, float=true})<CR>", opts)
 keymap("n", "gl", "<CMD>lua vim.diagnostic.open_float()<CR>", opts)
 -- keymap("n", "gL", "<CMD>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
 keymap("n", "gL", "<CMD>Telescope diagnostics<CR>", opts)
-keymap("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>", opts)
+keymap("n", "]d", "<CMD>lua vim.diagnostic.jump({count=1, float=true})<CR>", opts)
 -- keymap("n", "<leader>q", "<CMD>lua vim.diagnostic.setloclist()<CR>", opts)
 
 
