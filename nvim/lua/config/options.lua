@@ -12,7 +12,7 @@ vim.opt.clipboard = "unnamedplus"
 --vim.opt.paste = true
 
 -- so that `` is visible in markdown files
-vim.opt.conceallevel = 0
+-- vim.opt.conceallevel = 0
 
 -- allow the mouse to be used in neovim
 vim.opt.mouse = "a"
@@ -139,15 +139,15 @@ vim.opt.wrap = false
 vim.scrolloff = 10
 
 -- tab setup
-vim.opt.shiftwidth = 2
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
-vim.opt.cindent = false
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.cindent = true
 vim.opt.expandtab = true
-vim.opt.autoindent = false
-vim.opt.smartindent = false
-vim.opt.filetype.indent = "off"
-vim.cmd [[ :filetype indent off	]]
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.filetype.indent = "on"
+-- vim.cmd [[ :filetype indent on	]]
 
 -- enable status bar
 vim.opt.laststatus = 2

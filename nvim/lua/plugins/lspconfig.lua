@@ -7,9 +7,8 @@ local M = {
 }
 
 function M.config()
-  local lspconfig = require "lspconfig"
-  local icons = require "config.icons"
 
+  local icons = require "config.icons"
 
   vim.diagnostic.config {
     signs = {

@@ -45,7 +45,7 @@ keymap("x", "<Tab>", ">gv_", opts)
 keymap("v", "<Tab>", ">gv_", opts)
 -- <Tab> should operate as normal in insert mode.
 -- <C-T> indents when in insert mode.
-
+-- overwrites Ctrl + I (Tab) (forward in jump list)
 
 -- DE-INDENT
 -- ------------------------------------------------------------------------- -- 
@@ -74,6 +74,14 @@ keymap("n", "[t", "<CMD>tabprevious<CR>", opts)
 keymap("n", "td", "<CMD>tabclose<CR>", opts)
 keymap("n", "<leader>t", "<CMD>tabs<CR>", opts)
 keymap("n", "tn", "<CMD>tabnew<CR>", opts)
+
+-- ======================================================================== --
+-- JUMP LIST
+-- ========================================================================= --
+
+keymap("n", "<leader>j", "<CMD>jumps<CR>", opts)
+keymap("n", "]j", "<C-i>", opts)
+keymap("n", "[j", "<C-o>", opts)
 
 -- ========================================================================= --
 --  TELESCOPE
@@ -119,19 +127,6 @@ keymap("n", "gd", "<CMD>lua require('goto-preview').goto_preview_definition()<CR
 --keymap("n", "gd", "<CMD>Telescope lsp_definitions<CR>", opts)
 --keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions<CR>", opts)
 --keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions({jump_type='never'})<CR>", opts)
-
---  quick peek, one line popup of definition
-keymap("n", "<leader>d", function()
-	function preview_location_callback(_, result)
-		if result == nil or vim.tbl_isempty(result) then
-			return nil
-		end
-		vim.lsp.util.preview_location(result[1])
-	end
-
-	local params = vim.lsp.util.make_position_params()
-	return vim.lsp.buf_request(0, "textDocument/definition", params, preview_location_callback)
-end, opts)
 
 
 -- TYPE DEFINITIONS

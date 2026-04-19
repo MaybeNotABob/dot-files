@@ -48,7 +48,6 @@ function M.config()
       capabilities.offsetEncoding     = { "utf-16" }
       capabilities.positionEncodings  = { "utf-16" } 
 
-  local lspconfig = require("lspconfig")
 
   --  turn off formatting as this will be carried out by
   --  null-ls
@@ -67,11 +66,15 @@ function M.config()
 
       -- local server_capabilities = vim.tbl_deep_extend("force", {}, capabilities)
 
-      lspconfig[server].setup({
+      -- Define/extend the config using the new Neovim 0.11+ function API
+      vim.lsp.config(server, {
           on_attach = on_attach,
           capabilities = capabilities,
           -- capabilities = server_capabilities,
       })
+      
+      -- Auto-activate the server for matching filetypes
+      vim.lsp.enable(server)
 
   end
 

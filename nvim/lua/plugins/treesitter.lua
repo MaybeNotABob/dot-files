@@ -1,5 +1,11 @@
+-- tree-sitter-cli required with 0.12 >
+--
+-- sudo apt install tree-sitter-cli
+-- pacman -S tree-sitter-cli
+--
 local M = {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main",
   event = { "BufReadPost", "BufNewFile" },
   build = ":TSUpdate",
   dependencies = {
@@ -18,25 +24,15 @@ local M = {
 
 
 function M.config()
-  require("nvim-treesitter.configs").setup {
-    ensure_installed = { 
-    -- languages to install
-      "lua", "markdown", "markdown_inline", "bash", "python", "c", "cpp"
-    }, 
 
-    ignore_install = { "" },
-    sync_install = false,
+  require("nvim-treesitter").setup {
+    auto_install = true,
     highlight = {
       enable = true,
       disable = {},
       additional_vim_regex_highlighting = false,
     },
-
-    indent = { 
-      enable = true
-     },
   }
-  require("ts_context_commentstring").setup() 
 end
 
 

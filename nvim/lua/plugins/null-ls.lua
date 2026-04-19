@@ -27,7 +27,7 @@ function M.config()
     sources = {
         formatting.clang_format.with {
             extra_args = {
-              '--style={BasedOnStyle: google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true}'
+              '--style={BasedOnStyle: google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true, IndentWidth: 4}'
             }
         },
         -- null_ls.builtins.diagnostics.python-lsp-server,
