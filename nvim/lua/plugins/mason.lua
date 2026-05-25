@@ -29,13 +29,13 @@ function M.config()
 
   local mason_lspconfig = require("mason-lspconfig")
   
-  -- mason_lspconfig.setup({
-  --     -- list of servers for mason to install
-  --   automatic_enable = false,
-  --   ensure_installed = {
-  --     "clangd",								--  C/C++
-  --   }
-  -- })
+   mason_lspconfig.setup({
+       -- list of servers for mason to install
+     automatic_enable = false,
+     ensure_installed = {
+       "clangd",								--  C/C++
+     }
+   })
 
   local cmp_nvim_lsp = require("cmp_nvim_lsp")
   -- local capabilities = vim.lsp.protocol.make_client_capabilities()

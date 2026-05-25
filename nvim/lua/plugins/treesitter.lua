@@ -31,6 +31,10 @@ function M.config()
       enable = true,
       disable = {},
       additional_vim_regex_highlighting = false,
+      ensure_installed = { 
+      "c", "lua", "vim", "vimdoc", "query", 
+      "markdown", "markdown_inline" 
+      },
     },
   }
 end
