@@ -1,12 +1,10 @@
 local M = {
-  "nvim-mini/mini.comment",
-  event = { "InsertEnter","BufReadPre", "BufNewFile" },
+    "nvim-mini/mini.comment",
+    event = { "InsertEnter", "BufReadPre", "BufNewFile" },
 }
 
-
-function M.config ()
-  require('mini.comment').setup()
+function M.config()
+    require("mini.comment").setup()
 end
-
 
 return M

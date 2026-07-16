@@ -23,7 +23,6 @@ vim.opt.pumheight = 10
 -- faster completion (4000ms default)
 vim.opt.updatetime = 300
 
-
 -- ========================================================================= --
 --  File handling
 -- ========================================================================= --
@@ -35,20 +34,20 @@ vim.opt.filetype = "on"
 vim.opt.fileencoding = "utf-8"
 
 -- keep all vim files together for easy housekeeping
-local swap_dir = vim.fn.stdpath "config" .. "/lua/user/swap/"
+local swap_dir = vim.fn.stdpath("config") .. "/lua/user/swap/"
 
-local backup_dir = vim.fn.stdpath "config" .. "/lua/user/backup/"
+local backup_dir = vim.fn.stdpath("config") .. "/lua/user/backup/"
 
-local undo_dir = vim.fn.stdpath "config" .. "/lua/user/undo/"
+local undo_dir = vim.fn.stdpath("config") .. "/lua/user/undo/"
 
 -- function to check if a directory exists by attempting
 -- to rename it
 function path_exists(file_path)
-   local result = os.rename(file_path, file_path)
-    if (nil == result) then
-    	return false
+    local result = os.rename(file_path, file_path)
+    if nil == result then
+        return false
     else
-     	return true
+        return true
     end
 end
 
@@ -56,41 +55,38 @@ end
 vim.opt.swapfile = true
 vim.opt.directory = swap_dir
 
-if (vim.opt.swapfile == true) then
-  if not (path_exists(swap_dir)) then
-    vim.loop.fs_mkdir(swap_dir, 493)
-  end
+if vim.opt.swapfile == true then
+    if not (path_exists(swap_dir)) then
+        vim.loop.fs_mkdir(swap_dir, 493)
+    end
 end
-
 
 -- enable backup file
 vim.opt.backup = true
 vim.opt.backupdir = backup_dir
 
-if (vim.opt.backup == true) then
-  if not (path_exists(backup_dir)) then
-    vim.loop.fs_mkdir(backup_dir, 493)
-  end
+if vim.opt.backup == true then
+    if not (path_exists(backup_dir)) then
+        vim.loop.fs_mkdir(backup_dir, 493)
+    end
 end
-
 
 -- enable persistent undo
 vim.opt.undofile = false
 vim.opt.undodir = undo_dir
 
-if (vim.opt.undofile == true) then
-  if not (path_exists(undo_dir)) then
-    vim.loop.fs_mkdir(undo_dir, 493)
-  end
+if vim.opt.undofile == true then
+    if not (path_exists(undo_dir)) then
+        vim.loop.fs_mkdir(undo_dir, 493)
+    end
 end
-
 
 -- ========================================================================= --
 --  Search
 -- ========================================================================= --
 
 -- highlight all matches on previous search pattern
-vim.opt.hlsearch = true                        
+vim.opt.hlsearch = true
 
 -- ignore case in search patterns
 vim.opt.ignorecase = true
@@ -101,13 +97,13 @@ vim.opt.incsearch = true
 -- enable smart case
 vim.opt.smartcase = true
 
-
 -- ========================================================================= --
 --  Interface
 -- ========================================================================= --
 
--- completion menu 
+-- completion menu
 vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
+--vim.opt.autocomplete = true
 
 -- panel splitting
 vim.opt.splitbelow = true
@@ -130,7 +126,7 @@ vim.opt.termguicolors = true
 vim.opt.colorcolumn = "80,100"
 
 -- enable syntax highlighting
-vim.opt.syntax = "on" 
+vim.opt.syntax = "on"
 
 -- disable word wrap
 vim.opt.wrap = false
@@ -152,17 +148,17 @@ vim.opt.filetype.indent = "on"
 -- enable status bar
 vim.opt.laststatus = 2
 
-  -- code folding
-  -- zR (open all folds)
-  -- zM (close all open folds)
-  -- za (toggle fold at cursor)
-  -- https://neovim.io/doc/user/fold.html
-  vim.opt.foldcolumn = "1"
-  vim.opt.fillchars = 'fold: ,foldopen:,foldsep: ,foldclose:,eob: ' 
-  vim.opt.foldtext = ""
-  vim.opt.foldlevel = 99
-  vim.opt.foldlevelstart = 99
-  vim.opt.foldnestmax = 4
-  vim.opt.foldmethod = "expr"
-  vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-  vim.opt.foldenable = true 
+-- code folding
+-- zR (open all folds)
+-- zM (close all open folds)
+-- za (toggle fold at cursor)
+-- https://neovim.io/doc/user/fold.html
+vim.opt.foldcolumn = "1"
+vim.opt.fillchars = "fold: ,foldopen:,foldsep: ,foldclose:,eob: "
+vim.opt.foldtext = ""
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldnestmax = 4
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldenable = true
