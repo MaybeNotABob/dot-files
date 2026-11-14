@@ -1,5 +1,5 @@
 -- ========================================================================= --
---  General
+-- GENERAL
 -- ========================================================================= --
 
 -- disable compatibility with vi
@@ -24,7 +24,7 @@ vim.opt.pumheight = 10
 vim.opt.updatetime = 300
 
 -- ========================================================================= --
---  File handling
+-- FILE HANDLING
 -- ========================================================================= --
 
 -- enable file type detection by extension
@@ -33,56 +33,39 @@ vim.opt.filetype = "on"
 -- the encoding written to a file
 vim.opt.fileencoding = "utf-8"
 
--- keep all vim files together for easy housekeeping
-local swap_dir = vim.fn.stdpath("config") .. "/lua/user/swap/"
+local state_dir = vim.fn.stdpath("config")
+local directories = {
+    swap = state_dir .. "/lua/state/swap/",
+    backup = state_dir .. "/lua/state/backup/",
+    undo = state_dir .. "/lua/state/undo/",
+}
 
-local backup_dir = vim.fn.stdpath("config") .. "/lua/user/backup/"
+for _, path in pairs(directories) do
+    local stat = vim.uv.fs_stat(path)
 
-local undo_dir = vim.fn.stdpath("config") .. "/lua/user/undo/"
+    if stat and stat.type ~= "directory" then
+        error("Neovim state path exists but is not a directory: " .. path)
+    end
 
--- function to check if a directory exists by attempting
--- to rename it
-function path_exists(file_path)
-    local result = os.rename(file_path, file_path)
-    if nil == result then
-        return false
-    else
-        return true
+    if not stat then
+        vim.fn.mkdir(path, "p", 448)
+        local created_stat = vim.uv.fs_stat(path)
+
+        if not created_stat or created_stat.type ~= "directory" then
+            error("Unable to create Neovim state directory: " .. path)
+        end
     end
 end
 
--- enable swap files
 vim.opt.swapfile = true
-vim.opt.directory = swap_dir
-
-if vim.opt.swapfile == true then
-    if not (path_exists(swap_dir)) then
-        vim.loop.fs_mkdir(swap_dir, 493)
-    end
-end
-
--- enable backup file
+vim.opt.directory = directories.swap .. "//"
 vim.opt.backup = true
-vim.opt.backupdir = backup_dir
-
-if vim.opt.backup == true then
-    if not (path_exists(backup_dir)) then
-        vim.loop.fs_mkdir(backup_dir, 493)
-    end
-end
-
--- enable persistent undo
-vim.opt.undofile = false
-vim.opt.undodir = undo_dir
-
-if vim.opt.undofile == true then
-    if not (path_exists(undo_dir)) then
-        vim.loop.fs_mkdir(undo_dir, 493)
-    end
-end
+vim.opt.backupdir = directories.backup .. "//"
+vim.opt.undofile = true
+vim.opt.undodir = directories.undo .. "//"
 
 -- ========================================================================= --
---  Search
+-- SEARCH
 -- ========================================================================= --
 
 -- highlight all matches on previous search pattern
@@ -98,7 +81,7 @@ vim.opt.incsearch = true
 vim.opt.smartcase = true
 
 -- ========================================================================= --
---  Interface
+-- INTERFACE
 -- ========================================================================= --
 
 -- completion menu
@@ -134,31 +117,46 @@ vim.opt.wrap = false
 -- scroll passed the bottom of the buffer
 vim.scrolloff = 10
 
+-- enable status bar
+vim.opt.laststatus = 2
+
+-- ========================================================================= --
+-- INDENTATION
+-- ========================================================================= --
+
 -- tab setup
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
-vim.opt.cindent = true
+vim.opt.cindent = false
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.filetype.indent = "on"
 -- vim.cmd [[ :filetype indent on	]]
 
--- enable status bar
-vim.opt.laststatus = 2
+-- ========================================================================= --
+-- FOLDING
+-- ========================================================================= --
 
 -- code folding
 -- zR (open all folds)
 -- zM (close all open folds)
 -- za (toggle fold at cursor)
 -- https://neovim.io/doc/user/fold.html
+
 vim.opt.foldcolumn = "1"
-vim.opt.fillchars = "fold: ,foldopen:,foldsep: ,foldclose:,eob: "
+vim.opt.fillchars = {
+    fold = " ",
+    foldopen = "",
+    foldsep = " ",
+    foldclose = "",
+    eob = " ",
+}
+
 vim.opt.foldtext = ""
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldnestmax = 4
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldmethod = "indent"
 vim.opt.foldenable = true

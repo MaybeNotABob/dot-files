@@ -1,24 +1,18 @@
 local M = {
     "mason-org/mason-lspconfig.nvim",
     lazy = false,
-
     dependencies = {
         "mason-org/mason.nvim",
-        "jay-babu/mason-null-ls.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
         "neovim/nvim-lspconfig",
         "hrsh7th/cmp-nvim-lsp",
-    },
-
-    cmd = {
-        "Mason",
-        "MasonInstall",
-        "MasonUpdate",
     },
 }
 
 function M.config()
     require("mason").setup({
         ui = {
+            border = "rounded",
             icons = {
                 package_installed = "✓",
                 package_pending = "➜",
@@ -27,71 +21,32 @@ function M.config()
         },
     })
 
-    local mason_lspconfig = require("mason-lspconfig")
-
-    mason_lspconfig.setup({
-        -- list of servers for mason to install
-        automatic_enable = false,
-        ensure_installed = {
-            "clangd", -- C/C++
-            "lua_ls", -- lua-language-server
-            "vimls",  -- vim-language-server
-        },
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    vim.lsp.config("*", {
+        capabilities = capabilities,
     })
 
-    local cmp_nvim_lsp = require("cmp_nvim_lsp")
-    -- local capabilities = vim.lsp.protocol.make_client_capabilities()
-    local capabilities = cmp_nvim_lsp.default_capabilities()
-
-    capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-    }
-
-    capabilities.offsetEncoding = { "utf-16" }
-    capabilities.positionEncodings = { "utf-16" }
-
-    --  turn off formatting as this will be carried out by
-    --  null-ls
-    local on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-
-        if client.server_capabilities.foldingRangeProvider then
-            vim.api.nvim_buf_set_option(bufnr, "foldmethod", "expr")
-            vim.api.nvim_buf_set_option(bufnr, "foldexpr", "v:lua.vim.lsp.foldexpr()")
-        end
-    end
-
-    for _, server in ipairs(mason_lspconfig.get_installed_servers()) do
-        -- local server_capabilities = vim.tbl_deep_extend("force", {}, capabilities)
-
-        -- Define/extend the config using the new Neovim 0.11+ function API
-        vim.lsp.config(server, {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            -- capabilities = server_capabilities,
-        })
-
-        -- Auto-activate the server for matching filetypes
-        vim.lsp.enable(server)
-    end
-
-    -- auto configure formatters and ensure tooling
-    -- is installed
-    local mason_null_ls = require("mason-null-ls")
-    mason_null_ls.setup({
+    require("mason-lspconfig").setup({
         ensure_installed = {
-            "clang-format", -- C/C++
-            "stylua",       -- Lua formatter
+            "clangd",         -- C/C++
+            "lua_ls",         -- Lua language server
+            "vimls",          -- Vim language server
+            "pyright",        -- Python
         },
-        automatic_installation = true,
-        handlers = {},
+        automatic_enable = true,
     })
 
-    -- override formatting settings
-    -- e.g. clang-format
-    local null_ls = require("plugins.null-ls")
+    require("mason-tool-installer").setup({
+        ensure_installed = {
+            "clang-format",   -- C/C++
+            "stylua",         -- Lua
+            "ruff",           -- Python
+        },
+        auto_update = false,
+        run_on_start = true,
+        start_delay = 3000,
+        --debounce_hours = 1,
+    })
 end
 
 return M

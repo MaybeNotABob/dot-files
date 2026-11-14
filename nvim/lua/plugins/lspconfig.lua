@@ -3,6 +3,7 @@ local M = {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
+        "nvim-telescope/telescope.nvim",
     },
 }
 
@@ -19,7 +20,7 @@ function M.config()
             },
         },
         virtual_text = false,
-        update_in_insert = true,
+        update_in_insert = false,
         underline = true,
         severity_sort = true,
         float = {
@@ -29,6 +30,38 @@ function M.config()
             header = "",
             prefix = "",
         },
+    })
+
+    -- Neovim 0.11+ native LSP configuration. Keep LSP keymaps centralised
+    -- in config/keymaps.lua and install them only for attached buffers.
+    vim.lsp.config("lua_ls", {
+        settings = {
+            Lua = {
+                runtime = {
+                    version = "LuaJIT",
+                },
+                diagnostics = {
+                    globals = { "vim" },
+                },
+                workspace = {
+                    checkThirdParty = false,
+                    library = {
+                        vim.env.VIMRUNTIME,
+                    },
+                },
+                telemetry = {
+                    enable = false,
+                },
+            },
+        },
+    })
+
+    vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("user-lsp-attach", { clear = true }),
+        callback = function(args)
+            require("config.keymaps").on_lsp_attach(args)
+
+        end,
     })
 end
 

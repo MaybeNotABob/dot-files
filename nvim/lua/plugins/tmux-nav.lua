@@ -1,10 +1,10 @@
 local M = {
     "christoomey/vim-tmux-navigator",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "VeryLazy",
 }
 
 function M.config()
-    -- No setup to be called
+    -- Keymaps are defined centrally in config/keymaps.lua.
 end
 
 return M

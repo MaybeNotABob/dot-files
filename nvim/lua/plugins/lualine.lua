@@ -28,11 +28,11 @@ function M.config()
 
     vim.api.nvim_create_autocmd("RecordingLeave", {
         callback = function()
-            local timer = vim.loop.new_timer()
+            local timer = vim.uv.new_timer()
             timer:start(50, 0, function()
                 timer:stop()
                 timer:close()
-                vim.schedule_wrap(function()
+                vim.schedule(function()
                     lualine.refresh({
                         place = { "statusline" },
                     })
@@ -89,6 +89,12 @@ function M.config()
             lualine_b = {
                 {
                     "filename",
+                    -- 0: filename, 
+                    -- 1: relative path,
+                    -- 2: absolute path,
+                    -- 3: absolute with ~,
+                    -- 4: filename and parent dir
+                    path = 1,
                     colored = true,
                     color = {
                         bg = "#16161e",

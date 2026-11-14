@@ -1,6 +1,3 @@
-local opts = { noremap = true, silent = true, nowait = true }
-local keymap = vim.keymap.set
-
 -- n    normal mode
 -- i    insert mode
 -- v    visual and select
@@ -9,252 +6,211 @@ local keymap = vim.keymap.set
 -- c    command-line mode
 -- s    select
 
+local M = {}
+
+local keymap = vim.keymap.set
+local opts = {
+    noremap = true,
+    silent = true,
+--    nowait = true,
+}
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+vim.g.tmux_navigator_no_mappings = 1
+
+local function telescope_live_grep()
+    if vim.fn.executable("rg") ~= 1 and vim.fn.executable("grep") ~= 1 then
+        vim.notify(
+            "Telescope live_grep requires ripgrep (rg) or grep. Install ripgrep for the best experience.",
+            vim.log.levels.ERROR,
+            { title = "Telescope dependency missing" }
+        )
+        return
+    end
+
+    vim.cmd("Telescope live_grep")
+end
+
+local function map(mode, lhs, rhs, desc, extra)
+    local map_opts = vim.tbl_extend("force", opts, {
+        desc = desc,
+    }, extra or {})
+
+    keymap(mode, lhs, rhs, map_opts)
+end
+
 -- ========================================================================= --
 -- GENERAL
 -- ========================================================================= --
 
--- default leader key "\"
-keymap("n", " ", "<nop>", opts)
-vim.g.mapleader = " "
-
--- no highlight
-keymap("n", "nh", "<CMD>noh<CR>", opts)
--- unmap command history
-keymap("n", "q:", "<nop>", opts)
+map("n", "<Space>", "<Nop>", "Disable the space key's default action")
+map("n", "<leader>nh", "<CMD>nohlsearch<CR>", "Clear search highlighting")
+map("n", "<leader>?", function()
+    require("which-key").show({ global = true })
+end, "Show all keymaps")
+map("n", "q:", "<Nop>", "Disable command-line window")
 
 -- ========================================================================= --
---  COPY / PASTE SYSTEM CLIPBOARD
+-- CLIPBOARD
 -- ========================================================================= --
 
-keymap("n", '"+y', "<leader>y", opts)
-keymap("n", '"+Y', "<leader>Y", opts)
-keymap("n", '"+p', "<leader>p", opts)
-keymap("n", '"+P', "<leader>P", opts)
+map({ "n", "x" }, "<leader>y", '"+y', "Yank to system clipboard")
+map("n", "<leader>Y", '"+Y', "Yank line to system clipboard")
+map({ "n", "x" }, "<leader>p", '"+p', "Paste from system clipboard")
+map("n", "<leader>P", '"+P', "Paste before cursor from system clipboard")
 
 -- ========================================================================= --
---  INDENTATION
+-- INDENTATION
 -- ========================================================================= --
 
--- INDENT
--- ------------------------------------------------------------------------- --
-
-keymap("n", "<Tab>", ">>_", opts)
-keymap("x", "<Tab>", ">gv_", opts)
-keymap("v", "<Tab>", ">gv_", opts)
+map("n", "<Tab>", ">>", "Indent current line")
+map("x", "<Tab>", ">gv_", "Indent selection")
+map("v", "<Tab>", ">gv_", "Indent selection")
 -- <Tab> should operate as normal in insert mode.
 -- <C-T> indents when in insert mode.
 -- overwrites Ctrl + I (Tab) (forward in jump list)
 
--- DE-INDENT
--- ------------------------------------------------------------------------- --
+map("i", "<S-Tab>", "<C-D>", "De-indent current line")
+map("x", "<S-Tab>", "<gv$", "De-indent selection")
+map("v", "<S-Tab>", "<gv$", "De-indent selection")
+map("n", "<S-Tab>", "<<$",  "De-indent current line")
 
-keymap("i", "<S-Tab>", "<C-D>", opts)
-keymap("x", "<S-Tab>", "<gv$", opts)
-keymap("v", "<S-Tab>", "<gv$", opts)
-keymap("n", "<S-Tab>", "<<$", opts)
 
 -- ========================================================================= --
---  BUFFERS
+-- BUFFERS
 -- ========================================================================= --
 
-keymap("n", "]b", "<CMD>bnext<CR>", opts)
-keymap("n", "[b", "<CMD>bprev<CR>", opts)
-keymap("n", "<leader>b", "<CMD>Telescope buffers<CR>", opts)
-keymap("n", "bd", "<CMD>bdelete<CR>", opts)
-keymap("n", "bn", "<CMD>enew<CR>", opts)
+map("n", "]b", "<CMD>bnext<CR>", "Go to next buffer")
+map("n", "[b", "<CMD>bprevious<CR>", "Go to previous buffer")
+map("n", "<leader>bb", "<CMD>Telescope buffers<CR>", "Find open buffers")
+map("n", "<leader>bd", "<CMD>bdelete<CR>", "Delete current buffer")
+map("n", "<leader>bn", "<CMD>enew<CR>", "Create new buffer")
 
 -- ========================================================================= --
 -- TABS
 -- ========================================================================= --
 
-keymap("n", "]t", "<CMD>tabnext<CR>", opts)
-keymap("n", "[t", "<CMD>tabprevious<CR>", opts)
-keymap("n", "td", "<CMD>tabclose<CR>", opts)
-keymap("n", "<leader>t", "<CMD>tabs<CR>", opts)
-keymap("n", "tn", "<CMD>tabnew<CR>", opts)
+map("n", "]t", "<CMD>tabnext<CR>", "Go to next tab")
+map("n", "[t", "<CMD>tabprevious<CR>", "Go to previous tab")
+map("n", "<leader>td", "<CMD>tabclose<CR>", "Close current tab")
+map("n", "<leader>tt", "<CMD>tabs<CR>", "List tabs")
+map("n", "<leader>tn", "<CMD>tabnew<CR>", "Create new tab")
 
--- ======================================================================== --
+-- ========================================================================= --
+-- WINDOW MANAGEMENT
+-- ========================================================================= --
+
+map("n", "<leader>sv", "<CMD>vsplit<CR>", "Split window vertically")
+map("n", "<leader>sh", "<CMD>split<CR>", "Split window horizontally")
+map("n", "<leader>se", "<CMD>wincmd =<CR>", "Equalise window sizes")
+map("n", "<leader>sx", "<CMD>close<CR>", "Close current window")
+map("n", "<leader>so", "<CMD>only<CR>", "Close all other windows")
+map("n", "<C-k>", "<CMD>resize +2<CR>", "Increase window height")
+map("n", "<C-j>", "<CMD>resize -2<CR>", "Decrease window height")
+map("n", "<C-h>", "<CMD>vertical resize -2<CR>", "Decrease window width")
+map("n", "<C-l>", "<CMD>vertical resize +2<CR>", "Increase window width")
+
+-- Use vim-tmux-navigator commands so these mappings work across Neovim
+-- splits and tmux panes. The plugin's default mappings are disabled so that
+-- descriptions and ownership remain centralised in this file.
+map("n", "<C-Left>", "<CMD>TmuxNavigateLeft<CR>", "Move to the left window or tmux pane")
+map("n", "<C-Down>", "<CMD>TmuxNavigateDown<CR>", "Move to the lower window or tmux pane")
+map("n", "<C-Up>", "<CMD>TmuxNavigateUp<CR>", "Move to the upper window or tmux pane")
+map("n", "<C-Right>", "<CMD>TmuxNavigateRight<CR>", "Move to the right window or tmux pane")
+
+-- ========================================================================= --
+-- MOVEMENT
+-- ========================================================================= --
+
+map("n", "<A-j>", ":m .+1<CR>==", "Move line down")
+map("n", "<A-k>", ":m .-2<CR>==", "Move line up")
+map("x", "<A-j>", ":m '>+1<CR>gv=gv", "Move selection down")
+map("x", "<A-k>", ":m '<-2<CR>gv=gv", "Move selection up")
+
+-- ========================================================================= --
 -- JUMP LIST
 -- ========================================================================= --
 
-keymap("n", "<leader>j", "<CMD>jumps<CR>", opts)
-keymap("n", "]j", "<C-i>", opts)
-keymap("n", "[j", "<C-o>", opts)
+map("n", "<leader>jj", "<CMD>jumps<CR>", "Show jump list")
+map("n", "]j", "<C-i>", "Jump forward")
+map("n", "[j", "<C-o>", "Jump backward")
 
 -- ========================================================================= --
---  TELESCOPE
+-- TELESCOPE
 -- ========================================================================= --
 
-keymap("n", "ff", "<CMD>Telescope find_files initial_mode=insert <CR>", opts)
-keymap("n", "fg", "<CMD>Telescope live_grep  initial_mode=insert <CR>", opts)
-keymap("n", "fb", "<CMD>Telescope current_buffer_fuzzy_find initial_mode=insert <CR>", opts)
-keymap("n", "fh", "<CMD>Telescope help_tags initial_mode=insert <CR>", opts)
-keymap("n", "fr", "<CMD>Telescope registers initial_mode=insert <CR>", opts)
+map("n", "ff", "<CMD>Telescope find_files<CR>", "Find file")
+map("n", "fg", telescope_live_grep, "Search project text")
+map("n", "fb", "<CMD>Telescope current_buffer_fuzzy_find<CR>", "Search current buffer")
+map("n", "fh", "<CMD>Telescope help_tags<CR>", "Search help tags")
+map("n", "fr", "<CMD>Telescope registers<CR>", "Search registers")
 
--- ========================================================================= --
--- COMMENT (defaults)
--- ========================================================================= --
+map("n", "<leader>gq", function()
+    require("conform").format({ async = true, lsp_format = "never" })
+end, "Format current buffer")
 
--- `gcc` - Toggles the current line using linewise comment
--- `gbc` - Toggles the current line using blockwise comment
--- `[count]gcc` - Toggles the number of line given as a prefix-count using linewise
--- `[count]gbc` - Toggles the number of line given as a prefix-count using blockwise
--- `gc[count]{motion}` - (Op-pending) Toggles the region using linewise comment
--- `gb[count]{motion}` - (Op-pending) Toggles the region using blockwise comment
+map("v", "<leader>gq", function()
+    require("conform").format({ async = true, lsp_format = "never" })
+end, "Format current buffer")
 
 -- ========================================================================= --
 -- LSP
 -- ========================================================================= --
 
--- LSP DECLARATIONS
--- ------------------------------------------------------------------------- --
+-- LSP mappings are installed only for buffers with an attached LSP client.
+-- Keep their definitions here so all user keymaps remain centrally managed.
+function M.on_lsp_attach(args)
+    local bufnr = args.buf
+    local map_opts = {
+        buffer = bufnr,
+        noremap = true,
+        silent = true,
+    }
 
--- keymap("n", "gD", "<CMD>lua require('goto-preview').goto_preview_declaration()<CR>", opts)
--- keymap("n", "gD", "<CMD>Telescope lsp_declarations<CR>", opts)
-keymap("n", "gD", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
--- keymap("n", "gF", "<CMD>lua vim.lsp.buf.declaration()<CR>", opts)
+    map("n", "gD", vim.lsp.buf.declaration, "Go to declaration", map_opts)
+    map("n", "gd", vim.lsp.buf.definition, "Go to definition", map_opts)
+    map("n", "gT", "<CMD>Telescope lsp_type_definitions<CR>", "Find type definitions", map_opts)
+    map("n", "gr", "<CMD>Telescope lsp_references<CR>", "Find references", map_opts)
+    map("n", "gs", vim.lsp.buf.signature_help, "Show signature help", map_opts)
+    map("n", "gi", "<CMD>Telescope lsp_implementations<CR>", "Find implementations", map_opts)
+    map("n", "gI", "<CMD>Telescope lsp_document_symbols symbols=function,method<CR>", "Find document symbols", map_opts)
+    map("n", "<leader>gI", "<CMD>Telescope lsp_workspace_symbols symbols=function,method<CR>", "Find workspace symbols", map_opts)
+    map("n", "K", vim.lsp.buf.hover, "Show symbol documentation", map_opts)
 
--- LSP DEFINITIONS
--- ------------------------------------------------------------------------- --
+    map("n", "[d", function()
+        vim.diagnostic.jump({ count = -1, float = true })
+    end, "Go to previous diagnostic", map_opts)
 
-keymap("n", "gd", "<CMD>lua vim.lsp.buf.definition()<CR>", opts)
--- keymap("n", "gf", "<CMD>lua vim.lsp.buf.definition()<CR>", opts)
--- keymap("n", "gd", "<CMD>lua require('goto-preview').goto_preview_definition()<CR>", opts)
--- keymap("n", "gd", "<CMD>Telescope lsp_definitions<CR>", opts)
--- keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions<CR>", opts)
--- keymap("n", "gd", "<CMD>lua require('telescope.builtin').lsp_definitions({jump_type='never'})<CR>", opts)
+    map("n", "]d", function()
+        vim.diagnostic.jump({ count = 1, float = true })
+    end, "Go to next diagnostic", map_opts)
 
--- TYPE DEFINITIONS
--- ------------------------------------------------------------------------- --
-
--- keymap("n", "gt", "<CMD>lua vim.lsp.buf.type_definition()<CR>", opts)
-keymap("n", "gT", "<CMD>Telescope lsp_type_definitions<CR>", opts)
--- keymap("n", "gT", "<CMD>lua require('goto-preview').goto_preview_type_definition()<CR>", opts)
-
--- REFERENCES
--- ------------------------------------------------------------------------- --
-
--- keymap("n", "gr", "<CMD>lua vim.lsp.buf.references()<CR>", opts)
-keymap("n", "gr", "<CMD>Telescope lsp_references<CR>", opts)
--- keymap("n", "gr", "<CMD>lua require('goto-preview').goto_preview_references()<CR>", opts)
-
--- SIGNATURE
--- ------------------------------------------------------------------------- --
-
-keymap("n", "gs", "<CMD>lua vim.lsp.buf.signature_help()<CR>", opts)
-
--- IMPLEMENTION
--- ------------------------------------------------------------------------- --
-
--- keymap("n", "gi", "<CMD>lua vim.lsp.buf.implementation()<CR>", opts)
-keymap("n", "gi", "<CMD>Telescope lsp_implementations<CR>", opts)
-
--- SYMBOLS
--- ------------------------------------------------------------------------- --
-
--- keymap("n", "gI", "<CMD>lua require'telescope.builtin'.lsp_document_symbols()<CR>", opts)
--- keymap("n", "gI", "<CMD>lua require'telescope.builtin'.lsp_document_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
-keymap("n", "gI", "<CMD>Telescope lsp_document_symbols ignore_symbols=variable<CR>", opts)
-
--- keymap("n", "<leader>gI", "<CMD>lua require'telescope.builtin'.lsp_workspace_symbols()<CR>", opts)
--- keymap("n", "<leader>gI", "<CMD>lua require'telescope.builtin'.lsp_workspace_symbols(require('telescope.themes').get_dropdown({}))<CR>", opts)
-keymap("n", "<leader>gI", "<CMD>Telescope lsp_workspace_symbols ignore_symbols=variable<CR>", opts)
-
-keymap("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>", opts)
-
--- DIAGNOSTICS
--- ------------------------------------------------------------------------- --
-
-keymap("n", "[d", "<CMD>lua vim.diagnostic.jump({count=-1, float=true})<CR>", opts)
-keymap("n", "gl", "<CMD>lua vim.diagnostic.open_float()<CR>", opts)
--- keymap("n", "gL", "<CMD>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_dropdown({}))<CR>", opts)
-keymap("n", "gL", "<CMD>Telescope diagnostics<CR>", opts)
-keymap("n", "]d", "<CMD>lua vim.diagnostic.jump({count=1, float=true})<CR>", opts)
--- keymap("n", "<leader>q", "<CMD>lua vim.diagnostic.setloclist()<CR>", opts)
-
--- FORMATTING
--- ------------------------------------------------------------------------- --
-
-keymap("n", "gq", vim.lsp.buf.format, opts)
-keymap("v", "gq", vim.lsp.buf.format, opts)
+    map("n", "gl", vim.diagnostic.open_float, "Show line diagnostics", map_opts)
+    map("n", "gL", "<CMD>Telescope diagnostics<CR>", "Find diagnostics", map_opts)
+    map("n", "<leader>lr", vim.lsp.buf.rename, "Rename symbol", map_opts)
+    map("n", "<leader>la", vim.lsp.buf.code_action, "Code action", map_opts)
+end
 
 -- ========================================================================= --
---  MOVEMENT
+-- NVIM-TREE
 -- ========================================================================= --
 
-keymap("n", "<A-j>", ":m .+1<CR>==", opts)
-keymap("n", "<A-k>", ":m .-2<CR>==", opts)
-keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
-keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
-
--- keymap("n", "<A-j>", ":MoveLine(1)<CR>", opts)
--- keymap("n", "<A-k>", ":MoveLine(-1)<CR>", opts)
--- keymap("v", "<A-j>", ":MoveBlock(1)<CR>", opts)
--- keymap("v", "<A-k>", ":MoveBlock(-1)<CR>", opts)
--- keymap("n", "<A-l>", ":MoveHChar(1)<CR>", opts)
--- keymap("n", "<A-h>", ":MoveHChar(-1)<CR>", opts)
--- keymap("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
--- keymap("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
-
--- ========================================================================= --
---  NVIM-TREE
--- ========================================================================= --
-
-keymap("n", "<leader>f", function()
-    --
-    --  if nvim-tree is closed, open and focus it
-    --
-    --  if nvim-tree is opened and focused, close it
-    --
-    --  if nvim-tree is open, but another buffer is focused,
-    --  focus nvim-tree
-    --
-    local nvimTree = require("nvim-tree.api")
-    local currentBuf = vim.api.nvim_get_current_buf()
-    local currentBufFt = vim.api.nvim_get_option_value("filetype", { buf = currentBuf })
-    if currentBufFt == "NvimTree" then
-        nvimTree.tree.toggle()
-    else
-        nvimTree.tree.focus()
+map("n", "<leader>f", function()
+    local ok, tree_api = pcall(require, "nvim-tree.api")
+    if not ok then
+        vim.notify("nvim-tree is not available", vim.log.levels.ERROR)
+        return
     end
-end, opts)
 
--- ========================================================================= --
---  TROUBLE.NVIM
--- ========================================================================= --
+    local current_filetype = vim.bo.filetype
+    if current_filetype == "NvimTree" then
+        tree_api.tree.close()
+    else
+        tree_api.tree.open()
+        tree_api.tree.focus()
+    end
+end, "Toggle and focus file explorer")
 
--- keymap("n", "<leader>xx", "<CMD>Trouble diagnostics toggle<CR>",  opts)
--- keymap("n", "<leader>xx",
---   function ()
---     local trouble = require("trouble")
---     local currentBuf = vim.api.nvim_get_current_buf()
---     local currentBufFt = vim.api.nvim_get_option_value("filetype", { buf = currentBuf })
---     local opt = {
---       focus = true,
---       mode = "diagnostics",
---       filter = {
---         buf = currentBuf,
---       }
---     }
---
---     if currentBufFt == "trouble" then
---       trouble.toggle(opt)
---     else
---       trouble.open(opt)
---     end
---
---   end,
---
---   opts
--- )
---
---
--- keymap("n", "<leader>xX", "<CMD>Trouble diagnostics toggle<CR>",  opts)
--- keymap("n", "<leader>cs", "<CMD>Trouble symbols toggle focus=false<CR>",  opts)
--- keymap("n", "<leader>cl", "<CMD>Trouble lsp toggle focus=false win.position=right<CR>",  opts)
--- keymap("n", "<leader>xL", "<CMD>Trouble loclist toggle<CR>",  opts)
--- keymap("n", "<leader>xQ", "<CMD>Trouble qflist toggle<CR>",  opts)
 
--- ========================================================================= --
---
--- ========================================================================= --
+return M
