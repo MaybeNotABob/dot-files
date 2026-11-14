@@ -1,62 +1,66 @@
-# Neovim dot-files  
+# Neovim configuration
 
-Documenting my config progression as I explore the Neo(Vim) world.
+Personal Neovim configuration using Lua and `lazy.nvim`.
 
-## Screenshot of curent theme/config: <br>
+## Requirements
+
+- Neovim 0.12 or newer.
+- Git (to bootstrap `lazy.nvim`).
+- A C compiler and `tree-sitter-cli` for Tree-sitter parser installation.
+- `ripgrep` (`rg`) recommended for fast project-wide text searches.
+- `fd` recommended for fast file discovery. On Debian/Ubuntu the executable may be named `fdfind`; the configuration detects both names.
+
+Telescope remains loaded early (`VimEnter`, `BufReadPre`, and `BufNewFile`) because it is used as the primary file finder when Neovim starts at a project root. If `fd` is missing, Telescope falls back to `find`. If `rg` is missing, live grep falls back to recursive `grep` and a notification explains how to install ripgrep.
+
+## Screenshot of current theme/config: <br>
+
 <br>
 <img src="https://user-images.githubusercontent.com/292349/115295327-7afdce80-a10e-11eb-89b3-2591262bf95a.png"> 
-<sub>Image cedit: Folke</sub>
+<sub>Image credit: Folke</sub>
 
-## File Structure
+## Structure
 
-```
+```text
+nvim/
 ├── init.lua
-├── lazy-lock.json
-├── lazyvim.json
-├── lua
-│   ├── config
-│   │   ├── icons.lua
-│   │   ├── keymaps.lua
-│   │   ├── lazy.lua
-│   │   └── options.lua
-│   ├── plugins
-│   │   ├── cmp.lua
-│   │   ├── colorscheme.lua
-│   │   ├── comment.lua
-│   │   ├── goto-preview.lua
-│   │   ├── indent_blankline.lua
-│   │   ├── lspconfig.lua
-│   │   ├── mason.lua
-│   │   ├── move.lua
-│   │   ├── null-ls.lua
-│   │   ├── nvim-tree.lua
-│   │   ├── telescope.lua
-│   │   ├── tmux-nav.lua
-│   │   ├── treesitter.lua
-│   │   └── trouble.lua
-│   └── user
-│       ├── backup
-│       └── swap
-
-
+└── lua/
+    ├── config/
+    │   ├── icons.lua
+    │   ├── keymaps.lua         # All user-defined keymaps and descriptions
+    │   ├── lazy.lua
+    │   └── options.lua
+    └── plugins/
+        ├── cmp.lua
+        ├── colorscheme.lua
+        ├── comment.lua
+        ├── conform.lua         # clang-format and stylua formatting
+        ├── indent_blankline.lua
+        ├── lspconfig.lua
+        ├── lsp_signature.lua
+        ├── lualine.lua
+        ├── mason.lua
+        ├── nvim-tree.lua
+        ├── telescope.lua
+        ├── tmux-nav.lua
+        ├── treesitter.lua
 ```
 
-## Change log
+LSP mappings are installed only in buffers with an attached LSP client. Their definitions remain in `config/keymaps.lua`; `plugins/lspconfig.lua` calls the exported `on_lsp_attach()` function.
 
-- [17-APR-2024]:  Fixed None-ls UTF-8 warning, changed colorscheme to Tokyonight.
-- [13-APR-2024]:  Added None-ls (wraps null-ls) for formattng.
-- [20-DEC-2023]:  Moved to Lazy plugin manager from packer.
+## Language servers and formatting
 
+Mason installs and enables `clangd`, `Pyright`, `lua_ls`, and `vimls`. `conform.nvim` provides formatting through `clang-format` for C/C++ and `stylua` for Lua. Mason's tool installer manages those formatter binaries.
 
-## Acknowledgements
+## First launch
 
-__ChrisAtMachine / C@M__  
-Massive thank you for the instructional videos (NeoVim setup with Lua).  
-Go checkout his YouTube: https://www.youtube.com/watch?v=ctH-a-1eUME&list=PLhoH5vyxr6Qq41NFL4GvhFp-WLd5xzIzZ
+1. Start Neovim from a project directory.
+2. Allow `lazy.nvim` to install plugins. Run `:Lazy sync` and commit the generated `lazy-lock.json` to pin plugin versions.
+3. Run `:Mason` to inspect language servers and formatters.
+4. Run `:checkhealth` if a dependency or provider is unavailable.
+5. Commit `lazy-lock.json` after reviewing the resolved plugin versions.
 
-__ColorSchemes__  
-https://github.com/nordtheme/vim
-https://github.com/folke/tokyonight.nvim
+## Notes
 
-__Yuki Uthman__  
-youtube.com/watch?v=uDPZ2yJS6os
+- Tree-sitter uses the `main` branch API: parsers are installed with `require("nvim-treesitter").install()` and highlighting starts through `vim.treesitter.start()` on `FileType`.
+- Tree-sitter parser installation requires `tree-sitter-cli` and a compiler.
+- Formatting is manual via `<leader>cf`; no automatic format-on-save is enabled.
