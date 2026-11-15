@@ -1,199 +1,187 @@
 local M = {
     "nvim-lualine/lualine.nvim",
-    lazy = false,
-    --event = { "InsertEnter","BufReadPre", "BufNewFile" },
+    event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
 }
+
+local FUNCTION_NODES = {
+    function_definition = true,      -- C, C++, Python, Lua (anonymous), Bash
+    function_declaration = true,     -- Lua (named), Go, JS/TS
+    function_item = true,            -- Rust
+    method_definition = true,        -- JS/TS, Ruby
+    method_declaration = true,       -- Go, Java, C#
+    constructor_declaration = true,  -- Java, C#
+    destructor_declaration = true,   -- C#
+}
+
+local function extract_function_name(node, bufnr)
+    local name_node = node:field("name")[1]
+    if name_node then
+        return vim.treesitter.get_node_text(name_node, bufnr)
+    end
+
+    local decl = node:field("declarator")[1]
+    while decl do
+        local t = decl:type()
+        if t == "identifier"
+            or t == "field_identifier"
+            or t == "qualified_identifier"
+            or t == "destructor_name"
+            or t == "operator_name"
+        then
+            return vim.treesitter.get_node_text(decl, bufnr)
+        end
+
+        local next_decl = decl:field("declarator")[1]
+        if not next_decl and t == "parenthesized_declarator" then
+            next_decl = decl:named_child(0)
+        end
+        decl = next_decl
+    end
+
+    return ""
+end
+
+local function update_current_function(bufnr)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
+    if not vim.api.nvim_buf_is_valid(bufnr) then
+        return
+    end
+
+    -- Rely on Neovim's already-parsed tree instead of forcing parser:parse()
+    local ok, node = pcall(vim.treesitter.get_node, { bufnr = bufnr })
+    if not ok or not node then
+        vim.b[bufnr].lualine_current_func = ""
+        return
+    end
+
+    while node do
+        if FUNCTION_NODES[node:type()] then
+            vim.b[bufnr].lualine_current_func = extract_function_name(node, bufnr)
+            return
+        end
+        node = node:parent()
+    end
+
+    vim.b[bufnr].lualine_current_func = ""
+end
 
 function M.config()
     local icons = require("config.icons")
     local lualine = require("lualine")
+    local augroup = vim.api.nvim_create_augroup("LualineCustom", { clear = true })
 
-    local function show_macro_recording()
-        local recording_register = vim.fn.reg_recording()
-        if recording_register == "" then
-            return ""
-        else
-            return "Recording @" .. recording_register
-        end
-    end
+    -- Debounced Treesitter context updates so typing/scrolling stays fast
+    local ts_timer = nil
+    vim.api.nvim_create_autocmd({ "BufEnter", "CursorMoved", "InsertLeave" }, {
+        group = augroup,
+        callback = function(args)
+            if ts_timer then
+                ts_timer:stop()
+                ts_timer:close()
+            end
+            ts_timer = vim.defer_fn(function()
+                ts_timer = nil
+                update_current_function(args.buf)
+            end, 50)
+        end,
+    })
 
+    -- Instant macro recording indicator updates
     vim.api.nvim_create_autocmd("RecordingEnter", {
+        group = augroup,
         callback = function()
-            lualine.refresh({
-                place = { "statusline" },
-            })
+            lualine.refresh({ place = { "statusline" } })
         end,
     })
 
     vim.api.nvim_create_autocmd("RecordingLeave", {
+        group = augroup,
         callback = function()
-            local timer = vim.uv.new_timer()
-            timer:start(50, 0, function()
-                timer:stop()
-                timer:close()
-                vim.schedule(function()
-                    lualine.refresh({
-                        place = { "statusline" },
-                    })
-                end)
-            end)
+            vim.defer_fn(function()
+                lualine.refresh({ place = { "statusline" } })
+            end, 50)
         end,
     })
 
-    -- override and hide the command line bar
-    vim.opt.cmdheight = 0
+    local bg_dark = "#16161e"
+    local section_bg = { bg = bg_dark }
 
     lualine.setup({
         options = {
             icons_enabled = true,
-
-            -- use already applied theme
-            --theme = 'auto',
-
-            component_separators = {
-                left = "|",
-                right = "|",
-            },
-
-            section_separators = {
-                left = "",
-                right = "",
-            },
-
-            disabled_filetypes = {
-                statusline = {},
-                winbar = {},
-            },
-            ignore_focus = {
-                "NvimTree",
-            },
-
-            always_divide_middle = true,
-            globalstatus = false,
+            theme = "auto",
+            component_separators = { left = "|", right = "|" },
+            section_separators = { left = "", right = "" },
+            globalstatus = true,
             refresh = {
                 statusline = 1000,
                 tabline = 1000,
                 winbar = 1000,
             },
         },
-
         sections = {
             lualine_a = {
                 "mode",
                 {
-                    "macro-recording",
-                    fmt = show_macro_recording,
+                    function()
+                        local reg = vim.fn.reg_recording()
+                        return reg ~= "" and ("Recording @" .. reg) or ""
+                    end,
                 },
             },
             lualine_b = {
                 {
                     "filename",
-                    -- 0: filename, 
-                    -- 1: relative path,
-                    -- 2: absolute path,
-                    -- 3: absolute with ~,
-                    -- 4: filename and parent dir
                     path = 1,
-                    colored = true,
-                    color = {
-                        bg = "#16161e",
-                    },
+                    color = { fg = "#9EADB5", bg = bg_dark },
                 },
-                -- {
-                -- 	"filetype",
-                -- 	colored = true,
-                -- 	color = {
-                -- 		bg = "#16161e",
-                -- 	},
-                -- },
-                -- {
-                -- 	"encoding",
-                -- 	colored = true,
-                -- 	color = {
-                -- 		bg = "#16161e",
-                -- 	},
-                -- },
-                -- {
-                -- 	"fileformat",
-                -- 	colored = true,
-                -- 	color = {
-                -- 		bg = "#16161e",
-                -- 	},
-                -- },
+                {
+                    function()
+                        return vim.b.lualine_current_func or ""
+                    end,
+                    icon = { "󰊕", color = {fg = "#4EA6DE", bg = bg_dark }},
+                    color = { fg = "#9EADB5", bg = bg_dark },
+                },
             },
             lualine_c = {
                 {
                     "diagnostics",
-                    colored = true,
-                    color = {
-                        bg = "#16161e",
-                    },
-
+                    color = section_bg,
                     diagnostics_color = {
-                        error = {
-                            fg = "#c14242",
-                            bg = "#16161e",
-                        },
-                        warn = {
-                            fg = "#e0af68",
-                            bg = "#16161e",
-                        },
-                        info = {
-                            fg = "#6b8dd6",
-                            bg = "#16161e",
-                        },
-                        hint = {
-                            fg = "#83aa5c",
-                            bg = "#16161e",
-                        },
+                        error = { fg = "#c14242", bg = bg_dark },
+                        warn  = { fg = "#e0af68", bg = bg_dark },
+                        info  = { fg = "#6b8dd6", bg = bg_dark },
+                        hint  = { fg = "#83aa5c", bg = bg_dark },
                     },
-
                     symbols = {
-                        error = icons.diagnostics["Error"] .. " ",
-                        warn = icons.diagnostics["Warning"] .. " ",
-                        info = icons.diagnostics["Information"] .. " ",
-                        hint = icons.diagnostics["Hint"] .. " ",
+                        error = icons.diagnostics.Error .. " ",
+                        warn  = icons.diagnostics.Warning .. " ",
+                        info  = icons.diagnostics.Information .. " ",
+                        hint  = icons.diagnostics.Hint .. " ",
                     },
                 },
             },
-
             lualine_x = {
                 {
                     "branch",
-                    colored = true,
-                    color = {
-                        bg = "#16161e",
-                    },
+                    color = section_bg,
                 },
                 {
                     "diff",
-                    colored = true,
-                    color = {
-                        bg = "#16161e",
-                    },
+                    color = section_bg,
                     diff_color = {
-                        added = {
-                            fg = "#42b545", --'LuaLineDiffAdd',
-                            bg = "#16161e",
-                        },
-                        modified = {
-                            fg = "#ABABAB", --'LuaLineDiffChange',
-                            bg = "#16161e",
-                        },
-                        removed = {
-                            fg = "#c14242", --'LuaLineDiffDelete',
-                            bg = "#16161e",
-                        },
+                        added    = { fg = "#42b545", bg = bg_dark },
+                        modified = { fg = "#ABABAB", bg = bg_dark },
+                        removed  = { fg = "#c14242", bg = bg_dark },
                     },
                     symbols = {
-                        added = " ",
+                        added    = " ",
                         modified = " ",
-                        removed = " ",
+                        removed  = " ",
                     },
                 },
             },
-
             lualine_y = { "selectioncount" },
             lualine_z = { "location" },
         },
@@ -205,10 +193,7 @@ function M.config()
             lualine_y = {},
             lualine_z = {},
         },
-        tabline = {},
-        winbar = {},
-        inactive_winbar = {},
-        extensions = {},
+        extensions = { "nvim-tree", "lazy" },
     })
 end
 
