@@ -3,6 +3,23 @@ local M = {
     event = { "BufReadPre", "BufNewFile" },
 }
 
+local function has_project_config(filenames, dirname)
+    local path = (dirname and dirname ~= "") and dirname or vim.fn.getcwd()
+    return vim.fs.find(filenames, {
+        upward = true,
+        path = path,
+    })[1] ~= nil
+end
+
+local default_clang_format_style = table.concat({
+    "{",
+    "BasedOnStyle: Google,",
+    "BreakBeforeBraces: Allman,",
+    "AlignConsecutiveAssignments: true,",
+    "IndentWidth: 4",
+    "}",
+}, " ")
+
 function M.config()
     require("conform").setup({
         formatters_by_ft = {
@@ -14,17 +31,27 @@ function M.config()
         },
         formatters = {
             clang_format = {
-                prepend_args = {
-                    "--fallback-style={BasedOnStyle: Google, BreakBeforeBraces: Allman, AlignConsecutiveAssignments: true, IndentWidth: 4}",
-                },
+                prepend_args = function(_, ctx)
+                    if has_project_config({ ".clang-format", "_clang-format" }, ctx.dirname) then
+                        return {}
+                    end
+                    return {
+                        "--style=" .. default_clang_format_style,
+                    }
+                end,
             },
             stylua = {
-                prepend_args = {
-                    "--indent-type",
-                    "Spaces",
-                    "--indent-width",
-                    "4",
-                },
+                prepend_args = function(_, ctx)
+                    if has_project_config({ "stylua.toml", ".stylua.toml" }, ctx.dirname) then
+                        return {}
+                    end
+                    return {
+                        "--indent-type",
+                        "Spaces",
+                        "--indent-width",
+                        "4",
+                    }
+                end,
             },
             ruff_format = {},
         },

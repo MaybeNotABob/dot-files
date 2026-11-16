@@ -133,7 +133,12 @@ function M.config()
             lualine_b = {
                 {
                     "filename",
-                    path = 1,
+                    -- 0: filename, 
+                    -- 1: relative path,
+                    -- 2: absolute path,
+                    -- 3: absolute with ~,
+                    -- 4: filename and parent dir
+                    path = 4,
                     color = { fg = "#9EADB5", bg = bg_dark },
                 },
                 {
